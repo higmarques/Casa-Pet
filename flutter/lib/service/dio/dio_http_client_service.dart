@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:event_tracker/src/service/http/http_client_service.dart';
-import 'package:event_tracker/src/service/http/http_error_handler.dart';
-import 'package:event_tracker/src/service/util/custom_content_type.dart';
-import 'package:event_tracker/src/utils/Strings.dart';
+import 'package:event_tracker/service/http/http_client_service.dart';
+import 'package:event_tracker/service/http/http_error_handler.dart';
+import 'package:event_tracker/service/util/custom_content_type.dart';
+import 'package:event_tracker/utils/strings.dart';
 
 class DioHttpClientService implements HTTPClientService {
   DioHttpClientService(

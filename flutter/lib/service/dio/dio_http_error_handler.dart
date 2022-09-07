@@ -5,9 +5,9 @@ import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:event_tracker/src/service/exceptions/custom_exceptions.dart';
-import 'package:event_tracker/src/service/http/http_error_handler.dart';
-import 'package:event_tracker/src/utils/Strings.dart';
+import 'package:event_tracker/service/exceptions/custom_exceptions.dart';
+import 'package:event_tracker/service/http/http_error_handler.dart';
+import 'package:event_tracker/utils/strings.dart';
 
 class DioHttpErrorHandler extends HttpErrorHandler {
   @override

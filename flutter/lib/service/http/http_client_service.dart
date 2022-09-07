@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:event_tracker/src/service/util/custom_content_type.dart';
+import 'package:event_tracker/service/util/custom_content_type.dart';
 
 abstract class HTTPClientService {
   Future<Response<dynamic>> get(

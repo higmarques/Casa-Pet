@@ -1,13 +1,10 @@
-// ignore_for_file: avoid_dynamic_calls
-// TODO(maiara): ajustar erros
-
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:event_tracker/service/exceptions/custom_exceptions.dart';
 import 'package:event_tracker/service/http/http_error_handler.dart';
-import 'package:event_tracker/utils/strings.dart';
+import 'package:event_tracker/utils/utils.dart';
 
 class DioHttpErrorHandler extends HttpErrorHandler {
   @override

@@ -1,6 +1,11 @@
-import 'package:event_tracker/features/login/view/login_view.dart';
-import 'package:event_tracker/utils/themes.dart';
+import 'package:dio/dio.dart';
+import 'package:event_tracker/features/login/pages/login_page.dart';
+import 'package:event_tracker/features/login/repository/login_repository.dart';
+import 'package:event_tracker/service/http.dart';
+import 'package:event_tracker/service/http/http_error_handler.dart';
+import 'package:event_tracker/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -19,11 +24,20 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
+  var client = DioHttpClientService(
+    Dio(),
+    [LoggerInterceptor()],
+    DioHttpErrorHandler(),
+  );
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: Themes.mainTheme,
-      home: const Login(),
+    return RepositoryProvider(
+      create: (context) => LoginRepository(client),
+      child: MaterialApp(
+        theme: Themes.mainTheme,
+        home: const LoginPage(),
+      ),
     );
   }
 }

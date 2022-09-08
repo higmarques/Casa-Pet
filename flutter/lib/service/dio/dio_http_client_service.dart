@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:event_tracker/service/http/http_client_service.dart';
 import 'package:event_tracker/service/http/http_error_handler.dart';
 import 'package:event_tracker/service/util/custom_content_type.dart';
+import 'package:event_tracker/service/util/endpoints.dart';
 import 'package:event_tracker/utils/strings.dart';
 
 class DioHttpClientService implements HTTPClientService {
@@ -9,7 +10,7 @@ class DioHttpClientService implements HTTPClientService {
       this._client, List<Interceptor> interceptors, this._httpErrorHandler) {
     _client = _client
       ..interceptors.addAll(interceptors)
-      ..options.baseUrl = Strings.baseUrl;
+      ..options.baseUrl = Endpoints.baseUrl;
   }
 
   static const String pem = 'assets/certificates/PROD_NEW.pfx';
@@ -31,7 +32,7 @@ class DioHttpClientService implements HTTPClientService {
     String? baseUrl,
   }) async {
     _setupHeaders();
-    _client.options.baseUrl = baseUrl ?? Strings.baseUrl;
+    _client.options.baseUrl = baseUrl ?? Endpoints.baseUrl;
     try {
       final Response<dynamic> response =
           await _client.get(url, queryParameters: queryParams);
@@ -49,7 +50,7 @@ class DioHttpClientService implements HTTPClientService {
     Map<String, dynamic> queryParams = const <String, dynamic>{},
   }) async {
     _setupHeaders(contentType: contentType);
-    _client.options.baseUrl = Strings.baseUrl;
+    _client.options.baseUrl = Endpoints.baseUrl;
     try {
       final Response<dynamic> response = await _client.post(
         url,

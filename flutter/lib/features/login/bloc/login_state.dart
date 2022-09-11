@@ -2,8 +2,8 @@ part of 'login_bloc.dart';
 
 class LoginState extends Equatable {
   const LoginState({
-    this.username = Strings.empty,
-    this.password = Strings.empty,
+    this.username = BaseStrings.empty,
+    this.password = BaseStrings.empty,
   });
 
   final String username;

@@ -1,5 +1,5 @@
-export 'themes.dart';
-export 'strings.dart';
+export 'base_themes.dart';
+export 'base_strings.dart';
 export 'codable.dart';
-export 'colors.dart';
-export 'components/text_field.dart';
+export 'base_colors.dart';
+export 'components/base_text_field.dart';

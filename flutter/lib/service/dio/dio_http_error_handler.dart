@@ -10,7 +10,7 @@ class DioHttpErrorHandler extends HttpErrorHandler {
   @override
   Future<Exception> handleError(dynamic error) async {
     if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
-      return ConnectivityException(Strings.empty);
+      return ConnectivityException(BaseStrings.empty);
     }
 
     if (error?.response?.statusCode == HttpStatus.notFound) {

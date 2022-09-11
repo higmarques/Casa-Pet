@@ -34,7 +34,7 @@ class _AppViewState extends State<AppView> {
     return RepositoryProvider(
       create: (context) => LoginRepository(client),
       child: MaterialApp(
-        theme: Themes.mainTheme,
+        theme: BaseThemes.mainTheme,
         home: const LoginPage(),
       ),
     );

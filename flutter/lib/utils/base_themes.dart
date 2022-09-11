@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:event_tracker/utils/utils.dart';
 
-class Themes {
+class BaseThemes {
   static final mainTheme = ThemeData(
     colorScheme: const ColorScheme.light(
       background: BaseColors.mainBeige,

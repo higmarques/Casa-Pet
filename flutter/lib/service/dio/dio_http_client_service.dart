@@ -3,7 +3,6 @@ import 'package:event_tracker/service/http/http_client_service.dart';
 import 'package:event_tracker/service/http/http_error_handler.dart';
 import 'package:event_tracker/service/util/custom_content_type.dart';
 import 'package:event_tracker/service/util/endpoints.dart';
-import 'package:event_tracker/utils/strings.dart';
 
 class DioHttpClientService implements HTTPClientService {
   DioHttpClientService(

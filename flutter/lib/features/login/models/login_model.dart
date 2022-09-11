@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:event_tracker/utils/utils.dart';
 
 class LoginModel extends Codable {

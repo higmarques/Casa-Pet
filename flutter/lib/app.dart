@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:event_tracker/features/login/pages/login_page.dart';
 import 'package:event_tracker/features/login/repository/login_repository.dart';
 import 'package:event_tracker/service/http.dart';
-import 'package:event_tracker/service/http/http_error_handler.dart';
 import 'package:event_tracker/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

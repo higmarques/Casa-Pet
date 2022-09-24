@@ -32,6 +32,7 @@ class BaseTextField extends StatelessWidget {
       child: TextField(
         textAlignVertical: TextAlignVertical.bottom,
         style: TextStyle(fontSize: textSize),
+        onChanged: onChanged,
         obscureText: obscureText,
         decoration: InputDecoration(
           hintText: hintText,
@@ -57,6 +58,7 @@ class BaseTextField extends StatelessWidget {
   }
 
   static void _defaultOnChanged(String text) {
+    print("defaultOnChange");
     return;
   }
 }

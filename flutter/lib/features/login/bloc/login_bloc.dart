@@ -37,6 +37,5 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async {
     var response = loginRepository
         .login(LoginModel(username: state.username, password: state.password));
-    print(response);
   }
 }

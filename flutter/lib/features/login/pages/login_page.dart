@@ -1,4 +1,3 @@
-import 'package:event_tracker/utils/base_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:event_tracker/features/login/login.dart';
@@ -8,21 +7,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
-  static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const LoginView());
-  }
-
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => LoginBloc(
+        RepositoryProvider.of<LoginRepository>(context),
+      ),
+      child: _scaffold(context),
+    );
+  }
+
+  Scaffold _scaffold(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).colorScheme.primary,
-      body: BlocProvider(
-        create: (context) => LoginBloc(
-          RepositoryProvider.of<LoginRepository>(context),
-        ),
-        child: const LoginView(),
-      ),
+      body: const LoginView(),
     );
   }
 }
@@ -61,7 +60,7 @@ class LoginView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         BaseTextField(
-          onChanged: (name) => nameChanged(
+          onChanged: (name) => _nameChanged(
             context.read<LoginBloc>(),
             name,
           ),
@@ -77,7 +76,7 @@ class LoginView extends StatelessWidget {
         ),
         SizedBox(
           child: BaseTextField(
-            onChanged: (name) => passwordChanged(
+            onChanged: (name) => _passwordChanged(
               context.read<LoginBloc>(),
               name,
             ),
@@ -94,27 +93,31 @@ class LoginView extends StatelessWidget {
           height: 40,
         ),
         ElevatedButton(
-          onPressed: () => doLogin(context.read<LoginBloc>()),
+          onPressed: () => _doLogin(context.read<LoginBloc>()),
           child: const Text(BaseStrings.loginButtonLogin),
         ),
         const SizedBox(height: 16),
         ElevatedButton(
-          onPressed: () => doLogin(context.read<LoginBloc>()),
+          onPressed: () => _routeToRegister(context),
           child: const Text(BaseStrings.loginButtonRegister),
         ),
       ],
     );
   }
 
-  void nameChanged(Bloc bloc, String name) {
+  void _nameChanged(Bloc bloc, String name) {
     bloc.add(LoginNameChanged(name));
   }
 
-  void passwordChanged(Bloc bloc, String password) {
+  void _passwordChanged(Bloc bloc, String password) {
     bloc.add(LoginPasswordChanged(password));
   }
 
-  void doLogin(Bloc bloc) {
+  void _doLogin(Bloc bloc) {
     bloc.add(const LoginWillLogin());
+  }
+
+  void _routeToRegister(BuildContext context) {
+    Navigator.of(context).pushNamed(Routes.register);
   }
 }

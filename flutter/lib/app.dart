@@ -1,10 +1,6 @@
-import 'package:dio/dio.dart';
-import 'package:event_tracker/features/login/pages/login_page.dart';
-import 'package:event_tracker/features/login/repository/login_repository.dart';
-import 'package:event_tracker/service/http.dart';
+import 'package:event_tracker/router.dart';
 import 'package:event_tracker/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -23,20 +19,13 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
-  var client = DioHttpClientService(
-    Dio(),
-    [LoggerInterceptor()],
-    DioHttpErrorHandler(),
-  );
+  var router = AppRouter();
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => LoginRepository(client),
-      child: MaterialApp(
-        theme: BaseThemes.mainTheme,
-        home: const LoginPage(),
-      ),
+    return MaterialApp(
+      theme: BaseThemes.mainTheme,
+      onGenerateRoute: router.onGenerateRoute,
     );
   }
 }

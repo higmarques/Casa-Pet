@@ -60,15 +60,16 @@ class LoginView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         BaseTextField(
-          onChanged: (name) => _nameChanged(
-            context.read<LoginBloc>(),
-            name,
-          ),
           hintText: BaseStrings.loginFieldEmail,
+          type: TextInputType.emailAddress,
           prefixIcon: const Icon(
             Icons.mail_outline,
             size: 24,
             color: BaseColors.grey,
+          ),
+          onChanged: (name) => _nameChanged(
+            context.read<LoginBloc>(),
+            name,
           ),
         ),
         const SizedBox(
@@ -76,16 +77,17 @@ class LoginView extends StatelessWidget {
         ),
         SizedBox(
           child: BaseTextField(
-            onChanged: (name) => _passwordChanged(
-              context.read<LoginBloc>(),
-              name,
-            ),
             hintText: BaseStrings.loginFieldPassword,
             obscureText: true,
+            type: TextInputType.visiblePassword,
             prefixIcon: const Icon(
               Icons.lock_outlined,
               size: 24,
               color: BaseColors.grey,
+            ),
+            onChanged: (name) => _passwordChanged(
+              context.read<LoginBloc>(),
+              name,
             ),
           ),
         ),

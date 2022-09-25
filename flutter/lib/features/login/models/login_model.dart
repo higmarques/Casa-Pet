@@ -20,6 +20,6 @@ class LoginModel extends Codable {
 
   @override
   Map<String, dynamic> toJson() {
-    return {'username': username, 'password': password};
+    return {'email': username, 'password': password};
   }
 }

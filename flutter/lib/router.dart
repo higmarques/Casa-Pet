@@ -1,10 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:event_tracker/features/login/login.dart';
-import 'package:event_tracker/features/register/pages/register_page.dart';
-import 'package:event_tracker/features/register/repository/register_repository.dart';
-import 'package:event_tracker/service/http.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:event_tracker/features/login/login.dart';
+import 'package:event_tracker/features/register/register.dart';
+import 'package:event_tracker/service/http.dart';
 import 'package:event_tracker/utils/utils.dart';
 
 class AppRouter {

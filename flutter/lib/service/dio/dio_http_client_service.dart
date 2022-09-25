@@ -12,7 +12,6 @@ class DioHttpClientService implements HTTPClientService {
       ..options.baseUrl = Endpoints.baseUrl;
   }
 
-  static const String pem = 'assets/certificates/PROD_NEW.pfx';
   Dio _client;
   final HttpErrorHandler _httpErrorHandler;
 

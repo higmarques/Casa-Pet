@@ -12,6 +12,7 @@ class BaseTextField extends StatelessWidget {
     this.obscureText = false,
     this.textSize = 14.0,
     this.height = 40.0,
+    this.type,
     this.onChanged = BaseTextField._defaultOnChanged,
   });
 
@@ -23,17 +24,19 @@ class BaseTextField extends StatelessWidget {
   final bool obscureText;
   final double textSize;
   final double height;
+  final TextInputType? type;
   final Function(String) onChanged;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height,
+      height: isError ? height + 25 : height,
       child: TextField(
         textAlignVertical: TextAlignVertical.bottom,
         style: TextStyle(fontSize: textSize),
         onChanged: onChanged,
         obscureText: obscureText,
+        keyboardType: type,
         decoration: InputDecoration(
           hintText: hintText,
           errorText: isError ? errorText : null,

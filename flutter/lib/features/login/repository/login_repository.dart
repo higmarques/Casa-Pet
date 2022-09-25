@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:event_tracker/features/login/login.dart';
+import 'package:event_tracker/features/login/models/login_model.dart';
 import 'package:event_tracker/service/http.dart';
 import 'package:event_tracker/service/util/custom_content_type.dart';
 

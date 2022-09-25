@@ -15,15 +15,38 @@ class BaseThemes {
         maximumSize: const MaterialStatePropertyAll<Size>(Size(400, 57)),
         textStyle:
             const MaterialStatePropertyAll<TextStyle>(TextStyle(fontSize: 26)),
-        shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
+        shape: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              side: BorderSide(color: Colors.grey.shade300),
+            );
+          }
+
+          if (states.contains(MaterialState.pressed)) {
+            return RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              side: BorderSide(color: Color.fromARGB(0, 0, 0, 0)),
+            );
+          }
+
+          return RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
             side: const BorderSide(color: BaseColors.secondaryGreen),
-          ),
-        ),
-        backgroundColor: const MaterialStatePropertyAll<Color?>(
-          Color.fromRGBO(82, 121, 111, 1),
-        ),
+          );
+        }),
+        backgroundColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return Colors.grey.shade300;
+          }
+          return const Color.fromRGBO(82, 121, 111, 1);
+        }),
+        foregroundColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return Colors.grey.shade800;
+          }
+          return Colors.white;
+        }),
       ),
     ),
     appBarTheme: const AppBarTheme(

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:event_tracker/features/login/models/login_model.dart';
 import 'package:event_tracker/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:event_tracker/features/login/login.dart';

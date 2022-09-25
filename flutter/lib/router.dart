@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:event_tracker/features/dashboard/pages/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:event_tracker/features/login/login.dart';
@@ -31,9 +32,14 @@ class AppRouter {
             child: const RegisterPage(),
           ),
         );
+      case Routes.dashboard:
+        return MaterialPageRoute(
+          builder: (context) => const DashboardPage(),
+        );
       default:
         return MaterialPageRoute(
-          builder: (context) => const Text("NO ROUTE WITH NAME"),
+          builder: (context) => Text(
+              "NO ROUTE WITH NAME ${routeSettings.name?.toUpperCase() ?? "[NULL]"}"),
         );
     }
   }

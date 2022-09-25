@@ -28,3 +28,7 @@ class LoginPasswordChanged extends LoginEvent {
 class LoginWillLogin extends LoginEvent {
   const LoginWillLogin();
 }
+
+class LoginCloseError extends LoginEvent {
+  const LoginCloseError();
+}

@@ -9,6 +9,8 @@ class BaseStrings {
   static const loginFieldPassword = "senha";
   static const loginButtonLogin = "Login";
   static const loginButtonRegister = "Cadastrar-se";
+  static const loginRequestErrorText =
+      "Houve um problema com a requisição, verifique sua conexão com a rede e suas credencias de login";
 
   // Register
   static const registerAppBarTitle = "Cadastro de Usuário";

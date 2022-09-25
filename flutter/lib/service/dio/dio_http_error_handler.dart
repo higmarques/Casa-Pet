@@ -29,6 +29,14 @@ class DioHttpErrorHandler extends HttpErrorHandler {
           'Request to ${error.requestOptions.path} timed out');
     }
 
-    return Exception(error.message);
+    var dioError = error as DioError;
+    return AppException(error.message, dioError.response?.statusCode ?? 409);
   }
+}
+
+class AppException implements Exception {
+  AppException(this.message, this.statusCode);
+
+  String message;
+  int statusCode;
 }

@@ -1,3 +1,4 @@
+import 'package:crypt/crypt.dart';
 import 'package:equatable/equatable.dart';
 import 'package:event_tracker/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +16,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<RegisterPasswordChanged>(_onPasswordChanged);
     on<RegisterPasswordAgainChanged>(_onPasswordAgainChanged);
     on<RegisterWillRegister>(_onWillRegister);
+    on<RegisterCloseError>(_onCloseError);
   }
 
   final RegisterRepository registerRepository;
@@ -71,12 +73,42 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     RegisterWillRegister event,
     Emitter<RegisterState> emit,
   ) async {
-    var response = registerRepository.register(RegisterModel(
+    var loadingState = state.copyWith(
+      requestStatus: RegisterStateModel.loading,
+    );
+    emit(loadingState);
+
+    var encryptedPassword = Crypt.sha256(
+      state.password.value,
+      salt: state.email.value,
+      rounds: 5000,
+    );
+
+    var didRegister = await registerRepository.register(RegisterModel(
       username: state.name.value,
-      password: state.password.value,
+      password: encryptedPassword.hash,
       email: state.email.value,
     ));
-    print(response);
+
+    if (didRegister) {
+      var successState = state.copyWith(
+        requestStatus: RegisterStateModel.success,
+      );
+      emit(successState);
+    } else {
+      var errorState = state.copyWith(
+        requestStatus: RegisterStateModel.error,
+      );
+      emit(errorState);
+    }
+  }
+
+  Future<void> _onCloseError(
+    RegisterCloseError event,
+    Emitter<RegisterState> emit,
+  ) async {
+    var newState = state.copyWith(requestStatus: event.state);
+    emit(newState);
   }
 
   FormzStatus _validate({

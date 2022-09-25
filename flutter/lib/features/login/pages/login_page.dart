@@ -25,74 +25,37 @@ class LoginPage extends StatelessWidget {
           _routeToDashboard(context);
         }
       },
-      child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          body: BlocBuilder<LoginBloc, LoginState>(
-            builder: (context, state) {
-              List<Widget> views = [const LoginView()];
-              if (state.state.state == LoginViewState.loading) {
-                views.add(const LoadingView());
-              }
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            body: BlocBuilder<LoginBloc, LoginState>(
+              builder: (context, state) {
+                List<Widget> views = [const LoginView()];
+                if (state.state.state == LoginViewState.loading) {
+                  views.add(const LoadingView());
+                }
 
-              return Stack(children: views);
-            },
-          ),
-          bottomSheet: BlocBuilder<LoginBloc, LoginState>(
-            builder: (context, state) {
-              return state.state.state == LoginViewState.error
-                  ? const ErrorBottomSheet()
-                  : const SizedBox.shrink();
-            },
-          )),
+                return Stack(children: views);
+              },
+            ),
+            bottomSheet: BlocBuilder<LoginBloc, LoginState>(
+              builder: (context, state) {
+                return state.state.state == LoginViewState.error
+                    ? ErrorBottomSheet(
+                        BaseStrings.loginRequestErrorText,
+                        onTap: () => _closeError(context),
+                      )
+                    : const SizedBox.shrink();
+              },
+            )),
+      ),
     );
   }
 
   void _routeToDashboard(BuildContext context) {
     Navigator.of(context).pushNamed(Routes.dashboard);
-  }
-}
-
-class LoadingView extends StatelessWidget {
-  const LoadingView({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Color.fromARGB(110, 255, 255, 255), //Loading
-    );
-  }
-}
-
-class ErrorBottomSheet extends StatelessWidget {
-  const ErrorBottomSheet({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ColoredBox(
-      color: Colors.red.shade400,
-      child: SafeArea(
-        child: GestureDetector(
-          onTap: () => _closeError(context),
-          child: const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              BaseStrings.loginRequestErrorText,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 
   void _closeError(BuildContext context) {

@@ -26,6 +26,7 @@ class _AppViewState extends State<AppView> {
     return MaterialApp(
       theme: BaseThemes.mainTheme,
       onGenerateRoute: router.onGenerateRoute,
+      initialRoute: Routes.login,
     );
   }
 }

@@ -9,7 +9,9 @@ class DioHttpClientService implements HTTPClientService {
       this._client, List<Interceptor> interceptors, this._httpErrorHandler) {
     _client = _client
       ..interceptors.addAll(interceptors)
-      ..options.baseUrl = Endpoints.baseUrl;
+      ..options.baseUrl = Endpoints.baseUrl
+      ..options.connectTimeout = 60 * 500
+      ..options.receiveTimeout = 60 * 500;
   }
 
   Dio _client;

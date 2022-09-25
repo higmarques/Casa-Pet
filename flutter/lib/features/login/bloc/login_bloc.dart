@@ -1,3 +1,4 @@
+import 'package:crypt/crypt.dart';
 import 'package:equatable/equatable.dart';
 import 'package:event_tracker/features/login/models/models.dart';
 import 'package:event_tracker/utils/utils.dart';
@@ -45,11 +46,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async {
     var loading = state.copyWith(state: const LoginStateModel.loading());
     emit(loading);
-    // await Future.delayed(Duration(seconds: 5));
+
+    var encryptedPassword = Crypt.sha256(
+      state.password,
+      salt: state.username,
+      rounds: 5000,
+    );
+
     var responseDidLogin = await loginRepository.login(
       LoginModel(
         username: state.username,
-        password: state.password,
+        password: encryptedPassword.hash,
       ),
     );
     if (responseDidLogin) {

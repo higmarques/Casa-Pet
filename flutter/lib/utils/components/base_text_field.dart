@@ -7,7 +7,7 @@ class BaseTextField extends StatelessWidget {
     this.hintText = BaseStrings.empty,
     this.isEnabled = true,
     this.isError = false,
-    this.errorText = BaseStrings.defaultError,
+    this.errorText = BaseStrings.defaultFieldError,
     this.prefixIcon,
     this.obscureText = false,
     this.textSize = 14.0,

@@ -19,13 +19,38 @@ class RegisterPage extends StatelessWidget {
   }
 
   Widget _scaffold(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        appBar: _appBar(context),
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        body: const RegisterView(),
+    return BlocListener<RegisterBloc, RegisterState>(
+      listener: (context, state) {
+        if (state.requestStatus == RegisterStateModel.success) {
+          _routeToDashboard(context);
+        }
+      },
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          appBar: _appBar(context),
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          body: BlocBuilder<RegisterBloc, RegisterState>(
+            builder: (context, state) {
+              List<Widget> views = [const RegisterView()];
+              if (state.requestStatus == RegisterStateModel.loading) {
+                views.add(const LoadingView());
+              }
+              return Stack(children: views);
+            },
+          ),
+          bottomSheet: BlocBuilder<RegisterBloc, RegisterState>(
+            builder: (context, state) {
+              return state.requestStatus == RegisterStateModel.error
+                  ? ErrorBottomSheet(
+                      BaseStrings.defaultRequestErrorText,
+                      onTap: () => _closeError(context),
+                    )
+                  : const SizedBox.shrink();
+            },
+          ),
+        ),
       ),
     );
   }
@@ -40,6 +65,14 @@ class RegisterPage extends StatelessWidget {
         child: const Icon(Icons.arrow_back),
       ),
     );
+  }
+
+  void _closeError(BuildContext context) {
+    context.read<RegisterBloc>().add(const RegisterCloseError());
+  }
+
+  void _routeToDashboard(BuildContext context) {
+    Navigator.of(context).pushReplacementNamed(Routes.dashboard);
   }
 }
 
@@ -66,7 +99,7 @@ class RegisterView extends StatelessWidget {
                 const SizedBox(height: 16),
                 _formPasswordAgainField(),
                 const SizedBox(height: 8),
-                const PasswordTooltip(),
+                const BaseTooltip(BaseStrings.registerFieldPasswordTooltip),
               ],
             ),
             _formRegisterButton(),
@@ -84,7 +117,7 @@ class RegisterView extends StatelessWidget {
           hintText: BaseStrings.registerFieldName,
           isError: state.name.invalid,
           errorText:
-              state.name.error?.getErrorText() ?? BaseStrings.defaultError,
+              state.name.error?.getErrorText() ?? BaseStrings.defaultFieldError,
           type: TextInputType.name,
           prefixIcon: const Icon(
             Icons.person_outline,
@@ -106,8 +139,8 @@ class RegisterView extends StatelessWidget {
         return BaseTextField(
           hintText: BaseStrings.registerFieldEmail,
           isError: state.email.invalid,
-          errorText:
-              state.email.error?.getErrorText() ?? BaseStrings.defaultError,
+          errorText: state.email.error?.getErrorText() ??
+              BaseStrings.defaultFieldError,
           type: TextInputType.emailAddress,
           prefixIcon: const Icon(
             Icons.mail_outline,
@@ -129,8 +162,8 @@ class RegisterView extends StatelessWidget {
         return BaseTextField(
           hintText: BaseStrings.registerFieldPassword,
           isError: state.password.invalid,
-          errorText:
-              state.password.error?.getErrorText() ?? BaseStrings.defaultError,
+          errorText: state.password.error?.getErrorText() ??
+              BaseStrings.defaultFieldError,
           type: TextInputType.visiblePassword,
           obscureText: true,
           prefixIcon: const Icon(
@@ -154,7 +187,7 @@ class RegisterView extends StatelessWidget {
           hintText: BaseStrings.registerFieldPasswordAgain,
           isError: state.passwordAgain.invalid,
           errorText: state.passwordAgain.error?.getErrorText() ??
-              BaseStrings.defaultError,
+              BaseStrings.defaultFieldError,
           type: TextInputType.visiblePassword,
           obscureText: true,
           prefixIcon: const Icon(
@@ -208,31 +241,5 @@ class RegisterView extends StatelessWidget {
 
   void _doRegister(Bloc bloc) {
     bloc.add(const RegisterWillRegister());
-  }
-}
-
-class PasswordTooltip extends StatelessWidget {
-  const PasswordTooltip({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(8),
-        ),
-      ),
-      child: const Padding(
-        padding: EdgeInsets.all(8),
-        child: Text(
-          BaseStrings.registerFieldPasswordTooltip,
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    );
   }
 }

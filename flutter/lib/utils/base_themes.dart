@@ -19,14 +19,14 @@ class BaseThemes {
           if (states.contains(MaterialState.disabled)) {
             return RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
-              side: BorderSide(color: Colors.grey.shade300),
+              side: const BorderSide(color: BaseColors.lightGrey),
             );
           }
 
           if (states.contains(MaterialState.pressed)) {
             return RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
-              side: BorderSide(color: Color.fromARGB(0, 0, 0, 0)),
+              side: const BorderSide(color: BaseColors.transparent),
             );
           }
 
@@ -37,15 +37,12 @@ class BaseThemes {
         }),
         backgroundColor: MaterialStateProperty.resolveWith((states) {
           if (states.contains(MaterialState.disabled)) {
-            return Colors.grey.shade300;
+            return BaseColors.lightGrey;
           }
           return const Color.fromRGBO(82, 121, 111, 1);
         }),
         foregroundColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.disabled)) {
-            return Colors.grey.shade800;
-          }
-          return Colors.white;
+          return BaseColors.white;
         }),
       ),
     ),

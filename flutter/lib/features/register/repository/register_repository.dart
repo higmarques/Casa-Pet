@@ -9,12 +9,16 @@ class RegisterRepository {
   final HTTPClientService _http;
 
   Future<bool> register(RegisterModel request) async {
-    final Response<dynamic> response = await _http.post(
-      Endpoints.register,
-      contentType: CustomContentType.applicationJson,
-      body: jsonEncode(request.toJson()),
-    );
+    try {
+      final Response<dynamic> response = await _http.post(
+        Endpoints.register,
+        contentType: CustomContentType.applicationJson,
+        body: jsonEncode(request.toJson()),
+      );
 
-    return response.statusCode == 200;
+      return response.statusCode == 201;
+    } catch (_) {
+      return false;
+    }
   }
 }

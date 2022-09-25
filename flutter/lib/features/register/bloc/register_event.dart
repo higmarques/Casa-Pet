@@ -46,3 +46,12 @@ class RegisterPasswordAgainChanged extends RegisterEvent {
 class RegisterWillRegister extends RegisterEvent {
   const RegisterWillRegister();
 }
+
+class RegisterCloseError extends RegisterEvent {
+  const RegisterCloseError([this.state = RegisterStateModel.idle]);
+
+  final RegisterStateModel state;
+
+  @override
+  List<Object> get props => [state];
+}

@@ -21,7 +21,7 @@ class LoginPage extends StatelessWidget {
   Widget _scaffold(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
-        if (state.state.state == LoginViewState.success) {
+        if (state.state == LoginViewState.success) {
           _routeToDashboard(context);
         }
       },
@@ -33,7 +33,7 @@ class LoginPage extends StatelessWidget {
             body: BlocBuilder<LoginBloc, LoginState>(
               builder: (context, state) {
                 List<Widget> views = [const LoginView()];
-                if (state.state.state == LoginViewState.loading) {
+                if (state.state == LoginViewState.loading) {
                   views.add(const LoadingView());
                 }
 
@@ -42,7 +42,7 @@ class LoginPage extends StatelessWidget {
             ),
             bottomSheet: BlocBuilder<LoginBloc, LoginState>(
               builder: (context, state) {
-                return state.state.state == LoginViewState.error
+                return state.state == LoginViewState.error
                     ? ErrorBottomSheet(
                         BaseStrings.loginRequestErrorText,
                         onTap: () => _closeError(context),

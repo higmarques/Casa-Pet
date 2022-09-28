@@ -48,9 +48,9 @@ class RegisterWillRegister extends RegisterEvent {
 }
 
 class RegisterCloseError extends RegisterEvent {
-  const RegisterCloseError([this.state = RegisterStateModel.idle]);
+  const RegisterCloseError([this.state = RegisterViewState.idle]);
 
-  final RegisterStateModel state;
+  final RegisterViewState state;
 
   @override
   List<Object> get props => [state];

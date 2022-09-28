@@ -24,9 +24,10 @@ class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: true,
       theme: BaseThemes.mainTheme,
       onGenerateRoute: router.onGenerateRoute,
-      initialRoute: Routes.login,
+      initialRoute: Routes.newPet,
     );
   }
 }

@@ -4,8 +4,8 @@ import 'package:event_tracker/utils/utils.dart';
 class BaseThemes {
   static final mainTheme = ThemeData(
     colorScheme: const ColorScheme.light(
-      background: BaseColors.mainBeige,
-      primary: BaseColors.mainBeige,
+      background: BaseColors.primaryBeige,
+      primary: BaseColors.primaryBeige,
       secondary: BaseColors.secondaryGreen,
     ),
     primaryColor: const Color(0xFFFFB5A7),

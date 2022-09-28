@@ -1,19 +1,20 @@
 part of 'login_bloc.dart';
 
 class LoginState extends Equatable {
-  const LoginState(
-      {this.username = BaseStrings.empty,
-      this.password = BaseStrings.empty,
-      this.state = const LoginStateModel(state: LoginViewState.idle)});
+  const LoginState({
+    this.username = BaseStrings.empty,
+    this.password = BaseStrings.empty,
+    this.state = LoginViewState.idle,
+  });
 
   final String username;
   final String password;
-  final LoginStateModel state;
+  final LoginViewState state;
 
   LoginState copyWith({
     String? username,
     String? password,
-    LoginStateModel? state,
+    LoginViewState? state,
   }) {
     return LoginState(
         username: username ?? this.username,

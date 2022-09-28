@@ -74,7 +74,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     Emitter<RegisterState> emit,
   ) async {
     var loadingState = state.copyWith(
-      requestStatus: RegisterStateModel.loading,
+      requestStatus: RegisterViewState.loading,
     );
     emit(loadingState);
 
@@ -92,12 +92,12 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
     if (didRegister) {
       var successState = state.copyWith(
-        requestStatus: RegisterStateModel.success,
+        requestStatus: RegisterViewState.success,
       );
       emit(successState);
     } else {
       var errorState = state.copyWith(
-        requestStatus: RegisterStateModel.error,
+        requestStatus: RegisterViewState.error,
       );
       emit(errorState);
     }

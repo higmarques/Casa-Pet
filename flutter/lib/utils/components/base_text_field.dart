@@ -13,6 +13,7 @@ class BaseTextField extends StatelessWidget {
     this.textSize = 14.0,
     this.height = 40.0,
     this.type,
+    this.maxLines = 1,
     this.onChanged = BaseTextField._defaultOnChanged,
   });
 
@@ -23,33 +24,51 @@ class BaseTextField extends StatelessWidget {
   final Icon? prefixIcon;
   final bool obscureText;
   final double textSize;
-  final double height;
+  final double? height;
   final TextInputType? type;
+  final int? maxLines;
   final Function(String) onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: isError ? height + 25 : height,
-      child: TextField(
-        textAlignVertical: TextAlignVertical.bottom,
-        style: TextStyle(fontSize: textSize),
-        onChanged: onChanged,
-        obscureText: obscureText,
-        keyboardType: type,
-        decoration: InputDecoration(
-          hintText: hintText,
-          errorText: isError ? errorText : null,
-          enabled: isEnabled,
-          filled: true,
-          prefixIcon: prefixIcon,
-          fillColor: isEnabled ? BaseColors.white : BaseColors.lightGrey,
-          disabledBorder: _inputBorder(BaseColors.lightGrey),
-          enabledBorder: _inputBorder(BaseColors.white),
-          focusedBorder: _inputBorder(BaseColors.white),
-          errorBorder: _inputBorder(BaseColors.red, width: 2),
-          focusedErrorBorder: _inputBorder(BaseColors.red, width: 2),
+    if (height != null) {
+      return SizedBox(
+        height: isError ? height! + 25 : height,
+        child: _textField(),
+      );
+    } else {
+      return _textField();
+    }
+  }
+
+  TextField _textField() {
+    return TextField(
+      textAlignVertical: TextAlignVertical.bottom,
+      style: TextStyle(fontSize: textSize),
+      onChanged: onChanged,
+      obscureText: obscureText,
+      keyboardType: type,
+      maxLines: maxLines,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(8, 10, 8, 14),
+        isDense: height == null,
+        hintStyle: MaterialStateTextStyle.resolveWith(
+          (states) => TextStyle(
+            fontSize: textSize,
+            color: BaseColors.darkGrey,
+          ),
         ),
+        hintText: hintText,
+        errorText: isError ? errorText : null,
+        enabled: isEnabled,
+        filled: true,
+        prefixIcon: prefixIcon,
+        fillColor: isEnabled ? BaseColors.white : BaseColors.lightGrey,
+        disabledBorder: _inputBorder(BaseColors.lightGrey),
+        enabledBorder: _inputBorder(BaseColors.white),
+        focusedBorder: _inputBorder(BaseColors.white),
+        errorBorder: _inputBorder(BaseColors.red, width: 2),
+        focusedErrorBorder: _inputBorder(BaseColors.red, width: 2),
       ),
     );
   }

@@ -24,7 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) {
     var newState = state.copyWith(
       username: event.username,
-      state: const LoginStateModel(),
+      state: LoginViewState.idle,
     );
     emit(newState);
   }
@@ -35,7 +35,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) {
     var newState = state.copyWith(
       password: event.password,
-      state: const LoginStateModel(),
+      state: LoginViewState.idle,
     );
     emit(newState);
   }
@@ -44,7 +44,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginWillLogin event,
     Emitter<LoginState> emit,
   ) async {
-    var loading = state.copyWith(state: const LoginStateModel.loading());
+    var loading = state.copyWith(state: LoginViewState.loading);
     emit(loading);
 
     var encryptedPassword = Crypt.sha256(
@@ -60,10 +60,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       ),
     );
     if (responseDidLogin) {
-      var success = state.copyWith(state: const LoginStateModel.success());
+      var success = state.copyWith(state: LoginViewState.success);
       emit(success);
     } else {
-      var error = state.copyWith(state: const LoginStateModel.error());
+      var error = state.copyWith(state: LoginViewState.error);
       emit(error);
     }
   }
@@ -72,7 +72,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginCloseError event,
     Emitter<LoginState> emit,
   ) {
-    var idle = state.copyWith(state: const LoginStateModel());
+    var idle = state.copyWith(state: LoginViewState.idle);
     emit(idle);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:event_tracker/features/dashboard/pages/dashboard_page.dart';
+import 'package:event_tracker/features/new_pet/pages/new_dog_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:event_tracker/features/login/login.dart';
@@ -17,30 +18,50 @@ class AppRouter {
   Route onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
       case Routes.login:
-        return MaterialPageRoute(
-          builder: (context) => RepositoryProvider(
-            create: (context) => LoginRepository(client),
-            child: const LoginPage(),
-          ),
-        );
+        return _routeLogin();
       case Routes.register:
-        return MaterialPageRoute(
-          builder: (context) => RepositoryProvider(
-            create: (context) => RegisterRepository(
-              client,
-            ),
-            child: const RegisterPage(),
-          ),
-        );
+        return _routeRegister();
       case Routes.dashboard:
-        return MaterialPageRoute(
-          builder: (context) => const DashboardPage(),
-        );
+        return _routeDashboard();
+      case Routes.newPet:
+        return _routeNewPet();
       default:
         return MaterialPageRoute(
           builder: (context) => Text(
               "NO ROUTE WITH NAME ${routeSettings.name?.toUpperCase() ?? "[NULL]"}"),
         );
     }
+  }
+
+  MaterialPageRoute<dynamic> _routeLogin() {
+    return MaterialPageRoute(
+      builder: (context) => RepositoryProvider(
+        create: (context) => LoginRepository(client),
+        child: const LoginPage(),
+      ),
+    );
+  }
+
+  MaterialPageRoute<dynamic> _routeRegister() {
+    return MaterialPageRoute(
+      builder: (context) => RepositoryProvider(
+        create: (context) => RegisterRepository(
+          client,
+        ),
+        child: const RegisterPage(),
+      ),
+    );
+  }
+
+  MaterialPageRoute<dynamic> _routeDashboard() {
+    return MaterialPageRoute(
+      builder: (context) => const DashboardPage(),
+    );
+  }
+
+  MaterialPageRoute<dynamic> _routeNewPet() {
+    return MaterialPageRoute(
+      builder: (context) => const NewPetPage(),
+    );
   }
 }

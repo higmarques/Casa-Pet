@@ -4,12 +4,12 @@ class LoginState extends Equatable {
   const LoginState({
     this.username = BaseStrings.empty,
     this.password = BaseStrings.empty,
-    this.state = LoginViewState.idle,
+    this.viewState = LoginViewState.idle,
   });
 
   final String username;
   final String password;
-  final LoginViewState state;
+  final LoginViewState viewState;
 
   LoginState copyWith({
     String? username,
@@ -19,9 +19,9 @@ class LoginState extends Equatable {
     return LoginState(
         username: username ?? this.username,
         password: password ?? this.password,
-        state: state ?? this.state);
+        viewState: state ?? this.viewState);
   }
 
   @override
-  List<Object> get props => [username, password, state];
+  List<Object> get props => [username, password, viewState];
 }

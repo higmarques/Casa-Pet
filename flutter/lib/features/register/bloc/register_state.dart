@@ -6,15 +6,15 @@ class RegisterState extends Equatable {
       this.email = const EmailModel.pure(BaseStrings.empty),
       this.password = const PasswordModel.pure(BaseStrings.empty),
       this.passwordAgain = const PasswordAgainModel.pure(),
-      this.status = FormzStatus.pure,
-      this.requestStatus = RegisterViewState.idle});
+      this.formState = FormzStatus.pure,
+      this.viewState = RegisterViewState.idle});
 
   final NameModel name;
   final EmailModel email;
   final PasswordModel password;
   final PasswordAgainModel passwordAgain;
-  final FormzStatus status;
-  final RegisterViewState requestStatus;
+  final FormzStatus formState;
+  final RegisterViewState viewState;
 
   RegisterState copyWith({
     NameModel? name,
@@ -29,8 +29,8 @@ class RegisterState extends Equatable {
       email: email ?? this.email,
       password: password ?? this.password,
       passwordAgain: passwordAgain ?? this.passwordAgain,
-      status: status ?? this.status,
-      requestStatus: requestStatus ?? this.requestStatus,
+      formState: status ?? this.formState,
+      viewState: requestStatus ?? this.viewState,
     );
   }
 
@@ -40,7 +40,7 @@ class RegisterState extends Equatable {
         email,
         password,
         passwordAgain,
-        status,
-        requestStatus,
+        formState,
+        viewState,
       ];
 }

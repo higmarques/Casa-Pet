@@ -21,7 +21,7 @@ class RegisterPage extends StatelessWidget {
   Widget _scaffold(BuildContext context) {
     return BlocListener<RegisterBloc, RegisterState>(
       listener: (context, state) {
-        if (state.requestStatus == RegisterViewState.success) {
+        if (state.viewState == RegisterViewState.success) {
           _routeToDashboard(context);
         }
       },
@@ -34,7 +34,7 @@ class RegisterPage extends StatelessWidget {
           body: BlocBuilder<RegisterBloc, RegisterState>(
             builder: (context, state) {
               List<Widget> views = [const RegisterView()];
-              if (state.requestStatus == RegisterViewState.loading) {
+              if (state.viewState == RegisterViewState.loading) {
                 views.add(const LoadingView());
               }
               return Stack(children: views);
@@ -42,7 +42,7 @@ class RegisterPage extends StatelessWidget {
           ),
           bottomSheet: BlocBuilder<RegisterBloc, RegisterState>(
             builder: (context, state) {
-              return state.requestStatus == RegisterViewState.error
+              return state.viewState == RegisterViewState.error
                   ? ErrorBottomSheet(
                       BaseStrings.defaultRequestErrorText,
                       onTap: () => _closeError(context),
@@ -212,7 +212,7 @@ class RegisterView extends StatelessWidget {
           child: Align(
             alignment: Alignment.bottomCenter,
             child: ElevatedButton(
-              onPressed: state.status.isValidated
+              onPressed: state.formState.isValidated
                   ? () => _doRegister(context.read<RegisterBloc>())
                   : null,
               child: const Text(BaseStrings.registerButtonRegister),

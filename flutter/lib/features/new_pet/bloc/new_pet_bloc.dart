@@ -135,8 +135,8 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
   void _onCreatePet(
     NewPetCreatePet event,
     Emitter<NewPetState> emit,
-  ) {
-    repository.register(
+  ) async {
+    var response = await repository.register(
       NewPetRequestModel(
         state.name,
         state.type,
@@ -148,6 +148,9 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
         state.description,
       ),
     );
+    if (response) {
+      emit(state.copyWith(viewState: NewPetViewState.success));
+    }
   }
 
   bool _validate({

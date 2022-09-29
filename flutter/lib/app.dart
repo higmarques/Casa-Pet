@@ -27,7 +27,7 @@ class _AppViewState extends State<AppView> {
       debugShowCheckedModeBanner: true,
       theme: BaseThemes.mainTheme,
       onGenerateRoute: router.onGenerateRoute,
-      initialRoute: Routes.newPet,
+      initialRoute: Routes.login,
     );
   }
 }

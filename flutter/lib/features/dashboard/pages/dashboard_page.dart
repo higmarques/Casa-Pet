@@ -17,15 +17,21 @@ class DashboardPage extends StatelessWidget {
       ),
       body: Center(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              "YOU ARE LOGGED",
+              "AMBIENTE LOGADO",
+              textAlign: TextAlign.center,
               style: TextStyle(fontSize: 40),
             ),
-            const TextField(
-              maxLines: null,
-              keyboardType: TextInputType.multiline,
+            const SizedBox.square(dimension: 8.0),
+            const Text(
+              "LISTAR PETS",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 40),
             ),
+            const SizedBox.square(dimension: 8.0),
             ElevatedButton(
               onPressed: () => _routeToNewPet(context),
               child: const Text("Novo Pet"),
@@ -37,6 +43,6 @@ class DashboardPage extends StatelessWidget {
   }
 
   void _routeToNewPet(BuildContext context) {
-    Navigator.of(context).pushNamed(Routes.dashboard);
+    Navigator.of(context).pushNamed(Routes.newPet);
   }
 }

@@ -18,23 +18,34 @@ class NewPetPage extends StatelessWidget {
     );
   }
 
-  GestureDetector _scaffold(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        backgroundColor: BaseColors.primaryBeige,
-        appBar: AppBar(
-          title: const Text(BaseStrings.newPetAppBarTitle),
-          leading: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: const Icon(Icons.arrow_back),
+  Widget _scaffold(BuildContext context) {
+    return BlocListener<NewPetBloc, NewPetState>(
+      listener: (context, state) {
+        if (state.viewState == NewPetViewState.success) {
+          _routeBackToDashboard(context);
+        }
+      },
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          backgroundColor: BaseColors.primaryBeige,
+          appBar: AppBar(
+            title: const Text(BaseStrings.newPetAppBarTitle),
+            leading: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(Icons.arrow_back),
+            ),
           ),
+          body: NewPetView(),
         ),
-        body: NewPetView(),
       ),
     );
+  }
+
+  void _routeBackToDashboard(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }
 

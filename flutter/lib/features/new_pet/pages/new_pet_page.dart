@@ -11,7 +11,9 @@ class NewPetPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NewPetBloc(),
+      create: (context) => NewPetBloc(
+        repository: RepositoryProvider.of<NewPetRepository>(context),
+      ),
       child: _scaffold(context),
     );
   }

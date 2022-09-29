@@ -9,14 +9,16 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc(this.loginRepository) : super(const LoginState()) {
+  LoginBloc({
+    required this.repository,
+  }) : super(const LoginState()) {
     on<LoginNameChanged>(_onUsernameChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
     on<LoginWillLogin>(_onWillLogin);
     on<LoginCloseError>(_onCloseError);
   }
 
-  final LoginRepository loginRepository;
+  final LoginRepository repository;
 
   void _onUsernameChanged(
     LoginNameChanged event,
@@ -53,7 +55,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       rounds: 5000,
     );
 
-    var responseDidLogin = await loginRepository.login(
+    var responseDidLogin = await repository.login(
       LoginModel(
         username: state.username,
         password: encryptedPassword.hash,

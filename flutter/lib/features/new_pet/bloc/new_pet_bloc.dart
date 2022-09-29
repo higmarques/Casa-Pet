@@ -1,3 +1,4 @@
+import 'package:event_tracker/features/new_pet/new_pet.dart';
 import 'package:event_tracker/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -7,20 +8,23 @@ part 'new_pet_event.dart';
 part 'new_pet_state.dart';
 
 class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
-  NewPetBloc()
-      : super(NewPetState(
-          BaseStrings.empty,
-          BaseStrings.empty,
-          BaseStrings.empty,
-          BaseStrings.empty,
-          BaseStrings.empty,
-          BaseStrings.empty,
-          false,
-          BaseStrings.empty,
-          NewPetReturnModel(),
-          NewPetViewState.idle,
-          false,
-        )) {
+  NewPetBloc({
+    required this.repository,
+  }) : super(
+          NewPetState(
+            BaseStrings.empty,
+            BaseStrings.empty,
+            BaseStrings.empty,
+            BaseStrings.empty,
+            BaseStrings.empty,
+            BaseStrings.empty,
+            false,
+            BaseStrings.empty,
+            NewPetReturnModel(),
+            NewPetViewState.idle,
+            false,
+          ),
+        ) {
     on<NewPetNameChanged>(_onNameChanged);
     on<NewPetTypeChanged>(_onTypeChanged);
     on<NewPetSizeChanged>(_onSizeChanged);
@@ -32,6 +36,8 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
     on<NewPetViewChanged>(_onViewChanged);
     on<NewPetCreatePet>(_onCreatePet);
   }
+
+  final NewPetRepository repository;
 
   void _onNameChanged(
     NewPetNameChanged event,
@@ -129,7 +135,20 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
   void _onCreatePet(
     NewPetCreatePet event,
     Emitter<NewPetState> emit,
-  ) {}
+  ) {
+    repository.register(
+      NewPetRequestModel(
+        state.name,
+        state.type,
+        state.size,
+        state.location,
+        state.race,
+        state.sex,
+        state.isNeutered,
+        state.description,
+      ),
+    );
+  }
 
   bool _validate({
     String? name,

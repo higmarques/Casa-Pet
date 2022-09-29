@@ -12,7 +12,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginBloc(
-        RepositoryProvider.of<LoginRepository>(context),
+        repository: RepositoryProvider.of<LoginRepository>(context),
       ),
       child: _scaffold(context),
     );

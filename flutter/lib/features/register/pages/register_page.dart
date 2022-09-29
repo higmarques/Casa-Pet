@@ -12,7 +12,7 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => RegisterBloc(
-        RepositoryProvider.of<RegisterRepository>(context),
+        repository: RepositoryProvider.of<RegisterRepository>(context),
       ),
       child: _scaffold(context),
     );

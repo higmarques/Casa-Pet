@@ -10,7 +10,9 @@ part 'register_event.dart';
 part 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  RegisterBloc(this.registerRepository) : super(const RegisterState()) {
+  RegisterBloc({
+    required this.repository,
+  }) : super(const RegisterState()) {
     on<RegisterNameChanged>(_onNameChanged);
     on<RegisterEmailChanged>(_onEmailChanged);
     on<RegisterPasswordChanged>(_onPasswordChanged);
@@ -19,7 +21,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<RegisterCloseError>(_onCloseError);
   }
 
-  final RegisterRepository registerRepository;
+  final RegisterRepository repository;
 
   void _onNameChanged(
     RegisterNameChanged event,
@@ -84,7 +86,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       rounds: 5000,
     );
 
-    var didRegister = await registerRepository.register(RegisterModel(
+    var didRegister = await repository.register(RegisterModel(
       username: state.name.value,
       password: encryptedPassword.hash,
       email: state.email.value,

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:event_tracker/features/register/models/models.dart';
+import 'package:event_tracker/features/new_pet/models/models.dart';
 import 'package:event_tracker/service/http.dart';
 import 'package:event_tracker/service/util/custom_content_type.dart';
 
@@ -8,10 +8,10 @@ class NewPetRepository {
   NewPetRepository(this._http);
   final HTTPClientService _http;
 
-  Future<bool> register(RegisterModel request) async {
+  Future<bool> register(NewPetRequestModel request) async {
     try {
       final Response<dynamic> response = await _http.post(
-        Endpoints.register,
+        Endpoints.registerNewPet,
         contentType: CustomContentType.applicationJson,
         body: jsonEncode(request.toJson()),
       );

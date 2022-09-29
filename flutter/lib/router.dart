@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:event_tracker/features/dashboard/pages/dashboard_page.dart';
-import 'package:event_tracker/features/new_pet/pages/new_pet_page.dart';
-import 'package:event_tracker/features/new_pet/repository/new_pet_repository.dart';
+import 'package:event_tracker/features/new_pet/new_pet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:event_tracker/features/login/login.dart';

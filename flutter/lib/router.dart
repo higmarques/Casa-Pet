@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:event_tracker/features/dashboard/pages/dashboard_page.dart';
-import 'package:event_tracker/features/new_pet/pages/new_dog_page.dart';
+import 'package:event_tracker/features/new_pet/pages/new_pet_page.dart';
+import 'package:event_tracker/features/new_pet/repository/new_pet_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:event_tracker/features/login/login.dart';
@@ -26,9 +27,10 @@ class AppRouter {
       case Routes.newPet:
         return _routeNewPet();
       default:
+        var routeName = routeSettings.name?.toUpperCase() ?? "[NULL]";
         return MaterialPageRoute(
           builder: (context) => Text(
-              "NO ROUTE WITH NAME ${routeSettings.name?.toUpperCase() ?? "[NULL]"}"),
+              BaseStrings.nullRouteFeedback.replaceFirst("\$1", routeName)),
         );
     }
   }
@@ -45,9 +47,7 @@ class AppRouter {
   MaterialPageRoute<dynamic> _routeRegister() {
     return MaterialPageRoute(
       builder: (context) => RepositoryProvider(
-        create: (context) => RegisterRepository(
-          client,
-        ),
+        create: (context) => RegisterRepository(client),
         child: const RegisterPage(),
       ),
     );
@@ -61,7 +61,10 @@ class AppRouter {
 
   MaterialPageRoute<dynamic> _routeNewPet() {
     return MaterialPageRoute(
-      builder: (context) => const NewPetPage(),
+      builder: (context) => RepositoryProvider(
+        create: (context) => NewPetRepository(client),
+        child: const NewPetPage(),
+      ),
     );
   }
 }

@@ -1,13 +1,22 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:event_tracker/features/new_pet/new_pet.dart';
 import 'package:event_tracker/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NewPetPage extends StatelessWidget {
   const NewPetPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => NewPetBloc(),
+      child: _scaffold(context),
+    );
+  }
+
+  GestureDetector _scaffold(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -33,29 +42,42 @@ class NewPetView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-        child: CustomScrollView(
-          slivers: [
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SizedBox(height: 24),
-                  Expanded(child: NewPetForm()),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text(BaseStrings.newPetButtonAddPet),
-                  ),
-                  SizedBox(height: 24),
-                ],
+      child: Scrollbar(
+        thumbVisibility: true,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+          child: CustomScrollView(
+            slivers: [
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: 24),
+                    Expanded(child: NewPetForm()),
+                    BlocBuilder<NewPetBloc, NewPetState>(
+                      builder: (context, state) {
+                        return ElevatedButton(
+                          onPressed: state.formState
+                              ? () => _onTapCreatePet(context)
+                              : null,
+                          child: Text(BaseStrings.newPetButtonAddPet),
+                        );
+                      },
+                    ),
+                    SizedBox(height: 24),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _onTapCreatePet(BuildContext context) {
+    context.read<NewPetBloc>().add(NewPetCreatePet());
   }
 }
 
@@ -72,6 +94,7 @@ class NewPetForm extends StatelessWidget {
       children: [
         BaseTextField(
           hintText: BaseStrings.newPetFieldName,
+          onChanged: (value) => _onNameChanged(context, value),
         ),
         SizedBox(height: 16),
         PetTypeDropdown(),
@@ -82,10 +105,12 @@ class NewPetForm extends StatelessWidget {
           hintText: BaseStrings.newPetFieldLocation,
           maxLines: null,
           height: null,
+          onChanged: (value) => _onLocationChanged(context, value),
         ),
         SizedBox(height: 16),
         BaseTextField(
           hintText: BaseStrings.newPetFieldRace,
+          onChanged: (value) => _onRaceChanged(context, value),
         ),
         SizedBox(height: 16),
         PetSexDropdown(),
@@ -96,20 +121,37 @@ class NewPetForm extends StatelessWidget {
           hintText: BaseStrings.newPetFieldDescription,
           maxLines: null,
           height: null,
+          onChanged: (value) => _onDescriptionChanged(context, value),
         ),
         SizedBox(height: 16),
-        UploadButton(_onTapUpload),
+        // UploadButton(_onTapUpload), Adicionar depois
         SizedBox(height: 16),
-        BaseTooltip(
-          "Preencha todos os campos obrigatórios",
-          foregroundColor: BaseColors.red,
-        ),
+        // BaseTooltip(
+        //   BaseStrings.newPetFormNotValidText,
+        //   foregroundColor: BaseColors.red,
+        // ),
         SizedBox(height: 24),
       ],
     );
   }
 
-  void _onTapUpload() {}
+  void _onNameChanged(BuildContext context, String value) {
+    context.read<NewPetBloc>().add(NewPetNameChanged(value));
+  }
+
+  void _onLocationChanged(BuildContext context, String value) {
+    context.read<NewPetBloc>().add(NewPetLocationChanged(value));
+  }
+
+  void _onRaceChanged(BuildContext context, String value) {
+    context.read<NewPetBloc>().add(NewPetRaceChanged(value));
+  }
+
+  void _onDescriptionChanged(BuildContext context, String value) {
+    context.read<NewPetBloc>().add(NewPetDescriptionChanged(value));
+  }
+
+  void _onTapUpload(BuildContext context) {}
 }
 
 class PetTypeDropdown extends StatelessWidget {
@@ -135,11 +177,15 @@ class PetTypeDropdown extends StatelessWidget {
     return BaseDropdown(
       typeListItem,
       hintText: BaseStrings.newPetFieldType,
-      onChanged: _onChangeDropdown,
+      onChanged: (value) => _onChangeDropdown(context, value),
     );
   }
 
-  void _onChangeDropdown(String? value) {}
+  void _onChangeDropdown(BuildContext context, String? value) {
+    if (value != null) {
+      context.read<NewPetBloc>().add(NewPetTypeChanged(value));
+    }
+  }
 }
 
 class PetSizeDropdown extends StatelessWidget {
@@ -161,11 +207,15 @@ class PetSizeDropdown extends StatelessWidget {
     return BaseDropdown(
       typeListItem,
       hintText: BaseStrings.newPetFieldSize,
-      onChanged: _onChangeDropdown,
+      onChanged: (value) => _onChangeDropdown(context, value),
     );
   }
 
-  void _onChangeDropdown(String? value) {}
+  void _onChangeDropdown(BuildContext context, String? value) {
+    if (value != null) {
+      context.read<NewPetBloc>().add(NewPetSizeChanged(value));
+    }
+  }
 }
 
 class PetSexDropdown extends StatelessWidget {
@@ -178,6 +228,7 @@ class PetSexDropdown extends StatelessWidget {
     var typeList = [
       BaseStrings.newPetSexMale,
       BaseStrings.newPetSexFemale,
+      BaseStrings.newPetSexDontApply,
     ];
     var typeListItem = typeList
         .map((e) => DropdownMenuItem(value: e, child: Text(e)))
@@ -186,11 +237,15 @@ class PetSexDropdown extends StatelessWidget {
     return BaseDropdown(
       typeListItem,
       hintText: BaseStrings.newPetFieldSex,
-      onChanged: _onChangeDropdown,
+      onChanged: (value) => _onChangeDropdown(context, value),
     );
   }
 
-  void _onChangeDropdown(String? value) {}
+  void _onChangeDropdown(BuildContext context, String? value) {
+    if (value != null) {
+      context.read<NewPetBloc>().add(NewPetSexChanged(value));
+    }
+  }
 }
 
 class PetIsNeuteredDropdown extends StatelessWidget {
@@ -210,12 +265,19 @@ class PetIsNeuteredDropdown extends StatelessWidget {
 
     return BaseDropdown(
       typeListItem,
+      value: BaseStrings.newPetIsNeuteredNo,
       hintText: BaseStrings.newPetFieldIsNeutered,
-      onChanged: _onChangeDropdown,
+      onChanged: (value) => _onChangeDropdown(context, value),
     );
   }
 
-  void _onChangeDropdown(String? value) {}
+  void _onChangeDropdown(BuildContext context, String? value) {
+    if (value != null) {
+      context.read<NewPetBloc>().add(
+            NewPetIsNeuteredChanged(value == BaseStrings.newPetIsNeuteredYes),
+          );
+    }
+  }
 }
 
 class UploadButton extends StatelessWidget {

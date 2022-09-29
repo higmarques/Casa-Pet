@@ -5,11 +5,13 @@ class BaseDropdown extends StatelessWidget {
   const BaseDropdown(
     this.items, {
     super.key,
+    this.value,
     this.hintText,
     required this.onChanged,
   });
 
   final List<DropdownMenuItem<String>> items;
+  final String? value;
   final String? hintText;
   final Function(String?)? onChanged;
 
@@ -24,6 +26,7 @@ class BaseDropdown extends StatelessWidget {
         ),
       ),
       child: DropdownButtonFormField(
+        value: value,
         decoration: InputDecoration.collapsed(
           hintText: hintText,
         ),

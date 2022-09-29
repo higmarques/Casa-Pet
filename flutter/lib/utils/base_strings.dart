@@ -6,6 +6,7 @@ class BaseStrings {
   static const defaultRequestErrorText =
       "Houve um problema com a requisição, verifique sua conexão com a rede";
   static const salt = "32.7tkvmo5.g2wdf";
+  static const nullRouteFeedback = "NO ROUTE WITH NAME \$1";
 
   // Login
   // Login - Form
@@ -59,6 +60,7 @@ class BaseStrings {
   static const newPetFieldDescription = "descrição";
   static const newPetFieldPhoto = "uplaod de imagem";
   static const newPetButtonAddPet = "Cadastrar Pet";
+  static const newPetFormNotValidText = "Preencha todos os campos obrigatórios";
   // NewPet Form dropbox options
   static const newPetTypeDog = "Cão";
   static const newPetTypeCat = "Gato";
@@ -72,6 +74,7 @@ class BaseStrings {
   static const newPetSizeBig = "Grande";
   static const newPetSexMale = "Macho";
   static const newPetSexFemale = "Fêmea";
+  static const newPetSexDontApply = "Não se aplica";
   static const newPetIsNeuteredYes = "Sim";
   static const newPetIsNeuteredNo = "Não";
 }

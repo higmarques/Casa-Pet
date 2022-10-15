@@ -1,1 +1,3 @@
-class NewPetReturnModel {}
+class NewPetReturnModel {
+  const NewPetReturnModel();
+}

@@ -10,7 +10,7 @@ class LoadingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromARGB(110, 255, 255, 255), //Loading
+      color: const Color.fromARGB(110, 255, 255, 255), //Loading
       child: Center(
         child: Lottie.asset(BaseImages.animLoading),
       ),

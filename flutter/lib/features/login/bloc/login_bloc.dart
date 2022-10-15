@@ -1,6 +1,7 @@
 import 'package:crypt/crypt.dart';
 import 'package:equatable/equatable.dart';
 import 'package:event_tracker/features/login/models/models.dart';
+import 'package:event_tracker/service/session_manager.dart';
 import 'package:event_tracker/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:event_tracker/features/login/login.dart';
@@ -55,13 +56,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       rounds: 5000,
     );
 
-    var responseDidLogin = await repository.login(
-      LoginModel(
+    var responseToken = await repository.login(
+      LoginRequestModel(
         username: state.username,
         password: encryptedPassword.hash,
       ),
     );
-    if (responseDidLogin) {
+    if (responseToken.isNotEmpty) {
+      SessionManager.setToken(responseToken);
       var success = state.copyWith(state: LoginViewState.success);
       emit(success);
     } else {

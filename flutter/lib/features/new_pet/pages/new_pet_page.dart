@@ -4,6 +4,7 @@ import 'package:event_tracker/features/new_pet/new_pet.dart';
 import 'package:event_tracker/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 
 class NewPetPage extends StatelessWidget {
   const NewPetPage({super.key});
@@ -71,7 +72,7 @@ class NewPetView extends StatelessWidget {
                     BlocBuilder<NewPetBloc, NewPetState>(
                       builder: (context, state) {
                         return ElevatedButton(
-                          onPressed: state.formState
+                          onPressed: state.formState.isValid
                               ? () => _onTapCreatePet(context)
                               : null,
                           child: Text(BaseStrings.newPetButtonAddPet),

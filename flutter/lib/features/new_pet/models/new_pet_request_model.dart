@@ -1,6 +1,6 @@
 import 'package:event_tracker/utils/utils.dart';
 
-class NewPetRequestModel extends Codable {
+class NewPetRequestModel implements Codable {
   NewPetRequestModel(
     this.name,
     this.type,
@@ -10,7 +10,20 @@ class NewPetRequestModel extends Codable {
     this.sex,
     this.isNeutered,
     this.description,
+    this.token,
   );
+
+  @override
+  NewPetRequestModel.fromJson(Map<String, dynamic> json)
+      : name = json["name"],
+        type = json["type"],
+        size = json["size"],
+        location = json["location"],
+        race = json["race"],
+        sex = json["sex"],
+        isNeutered = json["isNeutered"] == BaseStrings.newPetIsNeuteredYes,
+        description = json["description"],
+        token = json["token"];
 
   final String name;
   final String type;
@@ -20,23 +33,7 @@ class NewPetRequestModel extends Codable {
   final String sex;
   final bool isNeutered;
   final String description;
-
-  @override
-  Decodable fromJson(Map<String, dynamic> json) {
-    var isNeuteredBool = json["isNeutered"] == BaseStrings.newPetIsNeuteredYes;
-    var register = NewPetRequestModel(
-      json["name"],
-      json["type"],
-      json["size"],
-      json["location"],
-      json["race"],
-      json["sex"],
-      isNeuteredBool,
-      json["description"],
-    );
-
-    return register;
-  }
+  final String token;
 
   @override
   Map<String, dynamic> toJson() {
@@ -54,6 +51,7 @@ class NewPetRequestModel extends Codable {
       "Castrado": isNeuteredString,
       "Imagens": "[NULO]",
       "Tipo": type,
+      "Token": token,
     };
   }
 }

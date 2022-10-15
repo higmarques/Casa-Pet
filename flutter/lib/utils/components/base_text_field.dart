@@ -80,7 +80,6 @@ class BaseTextField extends StatelessWidget {
   }
 
   static void _defaultOnChanged(String text) {
-    print("defaultOnChange");
     return;
   }
 }

@@ -1,19 +1,19 @@
 part of 'new_pet_bloc.dart';
 
 class NewPetState extends Equatable {
-  const NewPetState(
-    this.name,
-    this.type,
-    this.size,
-    this.location,
-    this.race,
-    this.sex,
-    this.isNeutered,
-    this.description,
-    this.petList,
-    this.viewState,
-    this.formState,
-  );
+  const NewPetState({
+    this.name = BaseStrings.empty,
+    this.type = BaseStrings.empty,
+    this.size = BaseStrings.empty,
+    this.location = BaseStrings.empty,
+    this.race = BaseStrings.empty,
+    this.sex = BaseStrings.empty,
+    this.isNeutered = false,
+    this.description = BaseStrings.empty,
+    this.petList = const NewPetReturnModel(),
+    this.viewState = NewPetViewState.idle,
+    this.formState = FormzStatus.pure,
+  });
 
   final String name;
   final String type;
@@ -26,7 +26,7 @@ class NewPetState extends Equatable {
   final NewPetReturnModel
       petList; // Vai ser usado depois para exibir a lista de pets
   final NewPetViewState viewState;
-  final bool formState;
+  final FormzStatus formState;
 
   NewPetState copyWith({
     String? name,
@@ -39,20 +39,20 @@ class NewPetState extends Equatable {
     String? description,
     NewPetReturnModel? petList,
     NewPetViewState? viewState,
-    bool? formState,
+    FormzStatus? formState,
   }) {
     var newState = NewPetState(
-      name ?? this.name,
-      type ?? this.type,
-      size ?? this.size,
-      location ?? this.location,
-      race ?? this.race,
-      sex ?? this.sex,
-      isNeutered ?? this.isNeutered,
-      description ?? this.description,
-      petList ?? this.petList,
-      viewState ?? this.viewState,
-      formState ?? this.formState,
+      name: name ?? this.name,
+      type: type ?? this.type,
+      size: size ?? this.size,
+      location: location ?? this.location,
+      race: race ?? this.race,
+      sex: sex ?? this.sex,
+      isNeutered: isNeutered ?? this.isNeutered,
+      description: description ?? this.description,
+      petList: petList ?? this.petList,
+      viewState: viewState ?? this.viewState,
+      formState: formState ?? this.formState,
     );
     return newState;
   }

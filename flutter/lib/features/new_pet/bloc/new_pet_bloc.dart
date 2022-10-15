@@ -1,8 +1,10 @@
 import 'package:event_tracker/features/new_pet/new_pet.dart';
+import 'package:event_tracker/service/session_manager.dart';
 import 'package:event_tracker/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:event_tracker/features/new_pet/models/models.dart';
+import 'package:formz/formz.dart';
 
 part 'new_pet_event.dart';
 part 'new_pet_state.dart';
@@ -11,19 +13,7 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
   NewPetBloc({
     required this.repository,
   }) : super(
-          NewPetState(
-            BaseStrings.empty,
-            BaseStrings.empty,
-            BaseStrings.empty,
-            BaseStrings.empty,
-            BaseStrings.empty,
-            BaseStrings.empty,
-            false,
-            BaseStrings.empty,
-            NewPetReturnModel(),
-            NewPetViewState.idle,
-            false,
-          ),
+          const NewPetState(),
         ) {
     on<NewPetNameChanged>(_onNameChanged);
     on<NewPetTypeChanged>(_onTypeChanged);
@@ -146,6 +136,7 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
         state.sex,
         state.isNeutered,
         state.description,
+        SessionManager.getToken(),
       ),
     );
     if (response) {
@@ -153,7 +144,7 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
     }
   }
 
-  bool _validate({
+  FormzStatus _validate({
     String? name,
     String? type,
     String? size,
@@ -162,12 +153,7 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
     String? sex,
     String? description,
   }) {
-    var isAnyEmpty = (name ?? state.name).isEmpty ||
-        (type ?? state.type).isEmpty ||
-        (size ?? state.size).isEmpty ||
-        (location ?? state.location).isEmpty ||
-        (race ?? state.race).isEmpty ||
-        (sex ?? state.sex).isEmpty;
-    return !isAnyEmpty;
+    // return Formz.validate([]);
+    return FormzStatus.valid;
   }
 }

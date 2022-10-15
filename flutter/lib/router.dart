@@ -16,7 +16,6 @@ class AppRouter {
   );
 
   Route onGenerateRoute(RouteSettings routeSettings) {
-    routeSettings.arguments;
     switch (routeSettings.name) {
       case Routes.login:
         return _routeLogin();

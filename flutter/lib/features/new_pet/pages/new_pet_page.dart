@@ -34,7 +34,7 @@ class NewPetPage extends StatelessWidget {
             title: const Text(BaseStrings.newPetAppBarTitle),
             leading: GestureDetector(
               onTap: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop(false);
               },
               child: const Icon(Icons.arrow_back),
             ),
@@ -46,7 +46,7 @@ class NewPetPage extends StatelessWidget {
   }
 
   void _routeBackToDashboard(BuildContext context) {
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(true);
   }
 }
 
@@ -279,7 +279,6 @@ class PetIsNeuteredDropdown extends StatelessWidget {
 
     return BaseDropdown(
       typeListItem,
-      value: BaseStrings.newPetIsNeuteredNo,
       hintText: BaseStrings.newPetFieldIsNeutered,
       onChanged: (value) => _onChangeDropdown(context, value),
     );

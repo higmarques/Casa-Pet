@@ -61,7 +61,7 @@ class BaseStrings {
   static const newPetFieldPhoto = "uplaod de imagem";
   static const newPetButtonAddPet = "Cadastrar Pet";
   static const newPetFormNotValidText = "Preencha todos os campos obrigatórios";
-  // NewPet Form dropbox options
+  // NewPet - Dropbox options
   static const newPetTypeDog = "Cão";
   static const newPetTypeCat = "Gato";
   static const newPetTypeBird = "Pássaro";
@@ -77,4 +77,15 @@ class BaseStrings {
   static const newPetSexDontApply = "Não se aplica";
   static const newPetIsNeuteredYes = "Sim";
   static const newPetIsNeuteredNo = "Não";
+  // NewPet - Field Validation Regex
+  static const newPetNameError = "Por favor preencha o campo de nome";
+  static const newPetTypeError = "Por favor selecione um tipo de pet";
+  static const newPetSizeError = "Por favor selecione um porte para o pet";
+  static const newPetLocationError =
+      "Por favor preencha o campo de localização";
+  static const newPetRaceError = "Por favor o campo de raça";
+  static const newPetSexError = "Por favor selecione um sexo para o pet";
+  static const newPetNeuteredError =
+      "Por favor selecione se o pet foi castrado";
+  static const newPetDescriptionError = "Descrição excedendo 250 caracteres";
 }

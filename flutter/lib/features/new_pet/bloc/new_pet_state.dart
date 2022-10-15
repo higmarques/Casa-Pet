@@ -2,41 +2,41 @@ part of 'new_pet_bloc.dart';
 
 class NewPetState extends Equatable {
   const NewPetState({
-    this.name = BaseStrings.empty,
-    this.type = BaseStrings.empty,
-    this.size = BaseStrings.empty,
-    this.location = BaseStrings.empty,
-    this.race = BaseStrings.empty,
-    this.sex = BaseStrings.empty,
-    this.isNeutered = false,
-    this.description = BaseStrings.empty,
+    this.name = const NamePetModel.pure(),
+    this.type = const TypeModel.pure(),
+    this.size = const SizeModel.pure(),
+    this.location = const LocationModel.pure(),
+    this.race = const RaceModel.pure(),
+    this.sex = const SexModel.pure(),
+    this.isNeutered = const IsNeuteredModel.pure(),
+    this.description = const DescriptionModel.pure(),
     this.petList = const NewPetReturnModel(),
     this.viewState = NewPetViewState.idle,
     this.formState = FormzStatus.pure,
   });
 
-  final String name;
-  final String type;
-  final String size;
-  final String location;
-  final String race;
-  final String sex;
-  final bool isNeutered;
-  final String description;
+  final NamePetModel name;
+  final TypeModel type;
+  final SizeModel size;
+  final LocationModel location;
+  final RaceModel race;
+  final SexModel sex;
+  final IsNeuteredModel isNeutered;
+  final DescriptionModel description;
   final NewPetReturnModel
       petList; // Vai ser usado depois para exibir a lista de pets
   final NewPetViewState viewState;
   final FormzStatus formState;
 
   NewPetState copyWith({
-    String? name,
-    String? type,
-    String? size,
-    String? location,
-    String? race,
-    String? sex,
-    bool? isNeutered,
-    String? description,
+    NamePetModel? name,
+    TypeModel? type,
+    SizeModel? size,
+    LocationModel? location,
+    RaceModel? race,
+    SexModel? sex,
+    IsNeuteredModel? isNeutered,
+    DescriptionModel? description,
     NewPetReturnModel? petList,
     NewPetViewState? viewState,
     FormzStatus? formState,

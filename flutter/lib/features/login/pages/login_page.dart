@@ -1,4 +1,5 @@
 import 'package:event_tracker/features/login/models/models.dart';
+import 'package:event_tracker/service/session_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:event_tracker/features/login/login.dart';
@@ -10,6 +11,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SessionManager.setContext(context);
     return BlocProvider(
       create: (context) => LoginBloc(
         repository: RepositoryProvider.of<LoginRepository>(context),

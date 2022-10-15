@@ -1,3 +1,4 @@
+import 'package:event_tracker/service/session_manager.dart';
 import 'package:event_tracker/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ class DashboardPage extends StatelessWidget {
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {
+            SessionManager.clearToken();
             Navigator.pop(context);
           },
           child: const Icon(Icons.arrow_back),
@@ -42,7 +44,9 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  void _routeToNewPet(BuildContext context) {
-    Navigator.of(context).pushNamed(Routes.newPet);
+  void _routeToNewPet(BuildContext context) async {
+    var didRegisterNewPet =
+        await Navigator.of(context).pushNamed(Routes.newPet) as bool?;
+    if (didRegisterNewPet ?? false) {}
   }
 }

@@ -128,6 +128,8 @@ class NewPetForm extends StatelessWidget {
         SizedBox(height: 16),
         PetSexDropdown(),
         SizedBox(height: 16),
+        Text("É castrado:"),
+        SizedBox(height: 4),
         PetIsNeuteredDropdown(),
         SizedBox(height: 16),
         BaseTextField(

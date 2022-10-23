@@ -21,6 +21,12 @@ import chardet
 import string
 from datetime import timedelta
 from flask import jsonify, make_response
+import requests
+import base64
+import boto3
+from botocore.exceptions import ClientError
+import time
+import io
 
 
 # from flask_login import login_user, logout_user
@@ -39,7 +45,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@localhost/casapet'.format
     urllib.parse.quote_plus(usuario), urllib.parse.quote_plus(senha))
 app.config["SECRET_KEY"] = "secret"
 
+s3 = boto3.resource('s3', aws_access_key_id='AKIAUUUNYLUHHNX37WF2',
+                    aws_secret_access_key="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")
+bucket_name = 'casa-pet'
 
+session = boto3.Session(
+    aws_access_key_id='AKIAUUUNYLUHHNX37WF2',
+    aws_secret_access_key="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")
 # app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:@localhost/casapet"
 
 db = SQLAlchemy(app)
@@ -52,9 +64,10 @@ class Users(db.Model):
     nomeCompleto = db.Column(db.String(50))
     email = db.Column(db.String(100))
     password = db.Column(db.String(100))
+    token_id = db.Column(db.String(200))
 
     def to_json(self):
-        return {"idusers": self.idusers, "nomeCompleto": self.nomeCompleto, "email": self.email, "password": self.password}
+        return {"idusers": self.idusers, "nomeCompleto": self.nomeCompleto, "email": self.email, "password": self.password, "token_id": self.token_id}
 
     def __repr__(self):
         return f"Usuário: {self.nomeCompleto}"
@@ -71,6 +84,7 @@ class Pets(db.Model):
     Castrado = db.Column(db.String(50))
     Imagens = db.Column(db.String(200))
     Tipo = db.Column(db.String(100))
+    fk_idusers = db.Column(db.Integer, db.ForeignKey('users.idusers'))
 
     def to_json(self):
         return {"idpets": self.idpets, "NomePet": self.NomePet, "Porte": self.Porte, "Tipo": self.Tipo,
@@ -108,10 +122,13 @@ def seleciona_usuario(idusers):
 @app.route("/cadastroUsuario", methods=["POST"])
 def cria_usuario():
     body = request.get_json()
+    email = body["email"]
+    access_token = create_access_token(identity=email)
 
     try:
         usuario = Users(
-            nomeCompleto=body["nomeCompleto"], email=body["email"], password=body["password"])
+            nomeCompleto=body["nomeCompleto"], email=body["email"], password=body["password"], token_id=access_token)
+        db.session.commit()
         db.session.add(usuario)
         db.session.commit()
         return gera_response(201, "usuario", usuario.to_json(), "Criado com sucesso")
@@ -125,12 +142,58 @@ def cria_usuario():
 @app.route("/cadastroPet", methods=["POST"])
 def cria_pet():
     body = request.get_json()
+    token = body["Token"]
+    usuario = Users.query.filter_by(
+        token_id=token).first()
+    id_usuario_token = usuario.idusers
+
+    file_name = body["Dados"]
+    object_name = "TESTE" + "." + body["Formato"]
+    bucket_name = 'casa-pet'
+    s3_client = boto3.client('s3', aws_access_key_id='AKIAUUUNYLUHHNX37WF2',
+                             aws_secret_access_key="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")
+
+    image_base64 = body["Dados"]
+    file_name_with_extension = body["NomePet"] + ".jpeg"
+
+    s3 = boto3.resource('s3', aws_access_key_id='AKIAUUUNYLUHHNX37WF2',
+                        aws_secret_access_key="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")
+    obj = s3.Object(bucket_name, file_name_with_extension)
+    obj.put(Body=base64.b64decode(image_base64))
+
+    image = str(base64.b64decode(image_base64))
+    s3_client = boto3.client('s3')
+    # obj = s3.Object(bucket_name, file_name_with_extension)
+    # obj.put(Body=base64.b64decode(image_base64))
+
+    # s3_client.upload_file(image, bucket, file_name_with_extension,
+    #                       ExtraArgs={'ACL': 'public-read'}, Callback=None, Config=None)
+    # s3_client.upload_file(
+    #     file_name, bucket, file_name_with_extension,
+    #     ExtraArgs={'ACL': 'public-read'})
+
+    # s3 = boto3.client('s3', aws_access_key_id='AKIAUUUNYLUHHNX37WF2',
+    #   aws_secret_access_key="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")
+    # file_name = body["Dados"]
+
+    # s3_client.upload_fileobj(file_name, bucket, object_name)
+    # s3.upload_file(file_name, bucket, object_name)
+    s3 = boto3.client('s3', aws_access_key_id='AKIAUUUNYLUHHNX37WF2',
+                      aws_secret_access_key="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")
+    image_url = s3.generate_presigned_url('get_object', Params={'Bucket': bucket_name, 'Key': file_name_with_extension},
+                                          )
+
+    # print(image_url)
+
+    # pegar token do body
+    # fazer querry pra pegar usuario com o token acima
+    # criar variavel com o id primario do objeto acima
 
     try:
         pets = Pets(
             NomePet=body["NomePet"], Porte=body["Porte"], Localizacao=body["Localizacao"],
             Raca=body["Raca"], Sexo=body["Sexo"], Descricao=body["Descricao"],
-            Castrado=body["Castrado"], Imagens=body["Imagens"], Tipo=body["Tipo"])
+            Castrado=body["Castrado"], Imagens=image_url, Tipo=body["Tipo"], fk_idusers=id_usuario_token)
         db.session.add(pets)
         db.session.commit()
         return gera_response(201, "pets", pets.to_json(), "Criado com sucesso")
@@ -152,38 +215,16 @@ def login():
     if (usuario_objeto):
 
         access_token = create_access_token(identity=email)
+
+        usuario_objeto.token_id = access_token
+        db.session.commit()
+
         # return gera_response(200, "usuario", access_token.to_json(), "Atualizado com sucesso")
         return jsonify(access_token=access_token)
         # return make_response(jsonify(access_token), 200)
 
     else:
         return gera_response_vazio(401)
-
-        # return gera_response_vazio(200)
-
-#     @app.route("/login", methods=["GET", "POST"])
-# def login():
-#     data = request.get_json()
-
-#     user = User.query.filter_by(email=data["email"]).first()
-#     if not user:
-#         return jsonify({
-#             "msg": "usuário não existe"
-#         })
-
-#     if not check_password_hash(user.password, data["password"]):
-#         return jsonify({
-#             "msg": "Senha incorreta!"
-
-#     payload={
-#         "id": user.id,
-#     }
-#     access_token=create_access_token(
-#         payload, expires_delta=timedelta(minutes=2))
-#     return jsonify({
-#         "access_token": access_token,
-#         "statusCode": 201
-#     }), 201
 
 # Atualizar Cadastro Usuário
 
@@ -234,6 +275,49 @@ def gera_response(status, nome_do_conteudo, conteudo, mensagem=False):
 
 def gera_response_vazio(status):
     return Response(status=status, mimetype="application/json")
+
+
+@ app.route("/foto", methods=["GET"])
+def lambda_handler():
+    body = request.get_json()
+    image_base64 = body["foto"]
+    file_name_with_extension = body["nome_do_arquivo"]
+    obj = s3.Object(bucket_name, file_name_with_extension)
+    obj.put(Body=base64.b64decode(image_base64))
+
+
+def create_presigned_url(bucket_name, object_name):
+    s3_client = boto3.client('s3', aws_access_key_id='AKIAUUUNYLUHHNX37WF2',
+                             aws_secret_access_key="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")
+    bucket_name = 'casa-pet'
+    object_name = 'testehl.jpeg'
+
+    response = s3_client.generate_presigned_url('get_object',
+                                                Params={'Bucket': 'casa-pet',
+                                                        'Key': 'testehl.jpeg'})
+
+    # The response contains the presigned URL
+    return response
+
+    # # get bucket location
+    # location = boto3.client('s3', aws_access_key_id='AKIAUUUNYLUHHNX37WF2',
+    #                       aws_secret_access_key="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").get_bucket_location(
+    #  Bucket=bucket_name)['LocationConstraint']
+    # response = s3_client.get_bucket_location(
+    # Bucket = bucket_name)
+    # response = s3.Object(bucket_name, "testehl.jpeg")
+    # print(response)
+    # # print(response)
+    # # # get object url
+    # object_url = "https://%s.s3.us-east-1.amazonaws.com/%s" % (
+    #     bucket_name, file_name_with_extension)
+    # print(object_url)
+    # # Get Object
+
+    # response = s3_client.download_file(bucket_name, "klee.png", "klee.png")
+    # response = s3_client.get_object(Bucket=bucket_name, Key="klee.png")
+    # print(response)
+    # return gera_response_vazio(200)
 
 
 app.run(host="192.168.15.14")

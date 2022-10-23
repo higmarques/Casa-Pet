@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:event_tracker/features/dashboard/pages/dashboard_page.dart';
+import 'package:event_tracker/features/dashboard/dashboard.dart';
 import 'package:event_tracker/features/new_pet/new_pet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,7 +54,10 @@ class AppRouter {
 
   MaterialPageRoute<dynamic> _routeDashboard() {
     return MaterialPageRoute(
-      builder: (context) => const DashboardPage(),
+      builder: (context) => RepositoryProvider(
+        create: (context) => DashboardRepository(client),
+        child: const DashboardPage(),
+      ),
     );
   }
 

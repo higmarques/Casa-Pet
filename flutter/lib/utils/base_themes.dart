@@ -26,7 +26,7 @@ class BaseThemes {
           if (states.contains(MaterialState.pressed)) {
             return RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
-              side: const BorderSide(color: BaseColors.transparent),
+              side: const BorderSide(color: BaseColors.transparentWhite),
             );
           }
 

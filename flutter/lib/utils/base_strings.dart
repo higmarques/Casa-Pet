@@ -1,5 +1,5 @@
 class BaseStrings {
-  // Generic
+  // ## Generic ##
   static const empty = "";
   static const defaultInvalidField = "Campo invalido";
   static const defaultFieldError = "Este campo não foi preenchido corretamente";
@@ -8,7 +8,7 @@ class BaseStrings {
   static const salt = "32.7tkvmo5.g2wdf";
   static const nullRouteFeedback = "NO ROUTE WITH NAME \$1";
 
-  // Login
+  // ## Login ##
   // Login - Form
   static const loginFieldEmail = "e-mail";
   static const loginFieldPassword = "senha";
@@ -18,7 +18,7 @@ class BaseStrings {
   static const loginRequestErrorText =
       "Houve um problema com a requisição, verifique sua conexão com a rede e suas credencias de login";
 
-  // Register
+  // ## Register ##
   static const registerAppBarTitle = "Cadastro de Usuário";
   // Register - Form
   static const registerFieldName = "nome completo *";
@@ -45,9 +45,18 @@ class BaseStrings {
   static const registerPasswordAgainErrorInvalid =
       "As duas senhas devem ser iguais";
 
-  // Dashboard
+  // ## Dashboard ##
+  static const dashboardAppBarTitle = "Adotar um pet";
+  // Dashboard - Bottom navigation bar
+  static const dashboardBarAdopt = "Adote";
+  static const dashboardBarDonate = "Doe";
+  // Dashboard - Cell
+  static const dashboardCellName = "Nome: ";
+  static const dashboardCellSex = "Sexo: ";
+  static const dashboardCellType = "Tipo: ";
+  static const dashboardCellSize = "Porte: ";
 
-  // NewPet
+  // ## NewPet ##
   static const newPetAppBarTitle = "Cadastro de Pet";
   // NewPet - Form
   static const newPetFieldName = "nome do pet *";

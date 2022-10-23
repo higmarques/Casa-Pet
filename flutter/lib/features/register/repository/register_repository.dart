@@ -17,13 +17,13 @@ class RegisterRepository {
         body: jsonEncode(request.toJson()),
       );
 
-      if (response.statusCode != 200) {
+      if (response.statusCode != 201) {
         return BaseStrings.empty;
       }
 
       final body = RegisterResponseModel.fromJson(response.data);
 
-      return body.token;
+      return body.user.token;
     } catch (_) {
       return BaseStrings.empty;
     }

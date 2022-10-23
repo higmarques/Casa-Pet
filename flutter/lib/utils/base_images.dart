@@ -5,4 +5,5 @@ class BaseImages {
   static const registerImage =
       "lib/assets/register/register_image/register_image.png";
   static const animLoading = "lib/assets/general/anim_loading.json";
+  static const gifLoading = "lib/assets/general/gif_loading.gif";
 }

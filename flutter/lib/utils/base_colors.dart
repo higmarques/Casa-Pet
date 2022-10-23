@@ -8,6 +8,8 @@ class BaseColors {
   static const Color grey = Colors.grey;
   static const Color lightGrey = Color.fromARGB(255, 215, 215, 215);
   static const Color lightestGrey = Color.fromARGB(255, 235, 235, 235);
+  static const Color beigeGray = Color.fromARGB(255, 250, 235, 239);
+  static const Color semiTransparentBeige = Color.fromARGB(128, 255, 181, 167);
   static const Color red = Colors.red;
   static const Color transparentWhite = Color.fromARGB(0, 255, 255, 255);
   static const Color semiTransparentWhite = Color.fromARGB(127, 255, 255, 255);

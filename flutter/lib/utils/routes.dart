@@ -3,5 +3,5 @@ class Routes {
   static const register = '/register';
   static const dashboard = '/dashboard';
   static const newPet = '/dashboard/new_pet';
-  static const details = '/dashboard/details';
+  static const petDetails = '/dashboard/details';
 }

@@ -1,30 +1,7 @@
 import 'package:event_tracker/utils/utils.dart';
 
-class DashboardGetPetsListResponse implements Codable {
-  DashboardGetPetsListResponse({
-    required this.pets,
-  });
-
-  @override
-  DashboardGetPetsListResponse.fromJson(Map<String, dynamic> json)
-      : pets = mapPets(json["pets"]);
-
-  final List<DashboardPet> pets;
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      'pets': pets,
-    };
-  }
-
-  static List<DashboardPet> mapPets(List<dynamic> list) {
-    return list.map((e) => DashboardPet.fromJson(e)).toList();
-  }
-}
-
-class DashboardPet implements Codable {
-  DashboardPet({
+class PetDetailsModel implements Codable {
+  PetDetailsModel({
     required this.id,
     required this.name,
     required this.type,
@@ -39,7 +16,7 @@ class DashboardPet implements Codable {
   });
 
   @override
-  DashboardPet.fromJson(Map<String, dynamic> json)
+  PetDetailsModel.fromJson(Map<String, dynamic> json)
       : id = json["idpets"],
         name = json["NomePet"],
         size = json["Porte"],

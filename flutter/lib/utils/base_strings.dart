@@ -56,6 +56,18 @@ class BaseStrings {
   static const dashboardCellType = "Tipo: ";
   static const dashboardCellSize = "Porte: ";
 
+  // ## Pet Details ##
+  // Pet Details - Details
+  static const petDetailsType = "Tipo";
+  static const petDetailsSize = "Size";
+  static const petDetailsSex = "Sexo";
+  static const petDetailsRace = "Raça";
+  static const petDetailsIsNeutered = "Castrado";
+  static const petDetailsDescription = "Descrição:";
+  static const petDetailsContactEmail = "E-mail de contato:";
+  // Pet Details - Button
+  static const petDetailsAdoptButton = "Quero Adotar";
+
   // ## NewPet ##
   static const newPetAppBarTitle = "Cadastro de Pet";
   // NewPet - Form

@@ -10,8 +10,9 @@ class DashboardPetCell extends StatelessWidget {
     return GestureDetector(
       onTap: () => _goToDetails(context),
       child: Container(
-        clipBehavior: Clip.hardEdge,
+        clipBehavior: Clip.antiAlias,
         decoration: const BoxDecoration(
+          color: BaseColors.lightGrey,
           borderRadius: BorderRadius.all(
             Radius.circular(20),
           ),
@@ -20,11 +21,12 @@ class DashboardPetCell extends StatelessWidget {
           height: 225,
           child: Stack(children: [
             SizedBox(
-              height: 225,
+              height: 255,
               child: FadeInImage.assetNetwork(
                   placeholder: BaseImages.gifLoading,
                   image: pet.image,
-                  fit: BoxFit.fitHeight),
+                  imageScale: 0.5,
+                  fit: BoxFit.fitWidth),
             ),
             Container(
               decoration: const BoxDecoration(
@@ -91,7 +93,7 @@ class DashboardPetCell extends StatelessWidget {
   }
 
   void _goToDetails(BuildContext context) {
-    Navigator.of(context).pushNamed(Routes.dashboard, arguments: pet);
+    Navigator.of(context).pushNamed(Routes.petDetails, arguments: pet.toJson());
   }
 }
 

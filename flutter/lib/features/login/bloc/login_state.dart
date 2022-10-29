@@ -19,7 +19,7 @@ class LoginState extends Equatable {
     return LoginState(
         username: username ?? this.username,
         password: password ?? this.password,
-        viewState: state ?? this.viewState);
+        viewState: state ?? viewState);
   }
 
   @override

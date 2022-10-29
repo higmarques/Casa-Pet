@@ -1,58 +1,58 @@
 part of 'new_pet_bloc.dart';
 
 class NewPetState extends Equatable {
-  const NewPetState(
-    this.name,
-    this.type,
-    this.size,
-    this.location,
-    this.race,
-    this.sex,
-    this.isNeutered,
-    this.description,
-    this.petList,
-    this.viewState,
-    this.formState,
-  );
+  const NewPetState({
+    this.name = const NamePetModel.pure(),
+    this.type = const TypeModel.pure(),
+    this.size = const SizeModel.pure(),
+    this.location = const LocationModel.pure(),
+    this.race = const RaceModel.pure(),
+    this.sex = const SexModel.pure(),
+    this.isNeutered = const IsNeuteredModel.pure(),
+    this.description = const DescriptionModel.pure(),
+    this.petList = const NewPetReturnModel(),
+    this.viewState = NewPetViewState.idle,
+    this.formState = FormzStatus.pure,
+  });
 
-  final String name;
-  final String type;
-  final String size;
-  final String location;
-  final String race;
-  final String sex;
-  final bool isNeutered;
-  final String description;
+  final NamePetModel name;
+  final TypeModel type;
+  final SizeModel size;
+  final LocationModel location;
+  final RaceModel race;
+  final SexModel sex;
+  final IsNeuteredModel isNeutered;
+  final DescriptionModel description;
   final NewPetReturnModel
       petList; // Vai ser usado depois para exibir a lista de pets
   final NewPetViewState viewState;
-  final bool formState;
+  final FormzStatus formState;
 
   NewPetState copyWith({
-    String? name,
-    String? type,
-    String? size,
-    String? location,
-    String? race,
-    String? sex,
-    bool? isNeutered,
-    String? description,
+    NamePetModel? name,
+    TypeModel? type,
+    SizeModel? size,
+    LocationModel? location,
+    RaceModel? race,
+    SexModel? sex,
+    IsNeuteredModel? isNeutered,
+    DescriptionModel? description,
     NewPetReturnModel? petList,
     NewPetViewState? viewState,
-    bool? formState,
+    FormzStatus? formState,
   }) {
     var newState = NewPetState(
-      name ?? this.name,
-      type ?? this.type,
-      size ?? this.size,
-      location ?? this.location,
-      race ?? this.race,
-      sex ?? this.sex,
-      isNeutered ?? this.isNeutered,
-      description ?? this.description,
-      petList ?? this.petList,
-      viewState ?? this.viewState,
-      formState ?? this.formState,
+      name: name ?? this.name,
+      type: type ?? this.type,
+      size: size ?? this.size,
+      location: location ?? this.location,
+      race: race ?? this.race,
+      sex: sex ?? this.sex,
+      isNeutered: isNeutered ?? this.isNeutered,
+      description: description ?? this.description,
+      petList: petList ?? this.petList,
+      viewState: viewState ?? this.viewState,
+      formState: formState ?? this.formState,
     );
     return newState;
   }

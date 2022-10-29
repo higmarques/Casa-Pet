@@ -3,12 +3,13 @@ import 'package:dio/dio.dart';
 import 'package:event_tracker/features/register/models/models.dart';
 import 'package:event_tracker/service/http.dart';
 import 'package:event_tracker/service/util/custom_content_type.dart';
+import 'package:event_tracker/utils/utils.dart';
 
 class RegisterRepository {
   RegisterRepository(this._http);
   final HTTPClientService _http;
 
-  Future<bool> register(RegisterModel request) async {
+  Future<String> register(RegisterRequestModel request) async {
     try {
       final Response<dynamic> response = await _http.post(
         Endpoints.register,
@@ -16,9 +17,15 @@ class RegisterRepository {
         body: jsonEncode(request.toJson()),
       );
 
-      return response.statusCode == 201;
+      if (response.statusCode != 201) {
+        return BaseStrings.empty;
+      }
+
+      final body = RegisterResponseModel.fromJson(response.data);
+
+      return body.user.token;
     } catch (_) {
-      return false;
+      return BaseStrings.empty;
     }
   }
 }

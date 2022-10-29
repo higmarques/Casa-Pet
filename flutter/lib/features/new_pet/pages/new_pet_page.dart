@@ -4,6 +4,7 @@ import 'package:event_tracker/features/new_pet/new_pet.dart';
 import 'package:event_tracker/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 
 class NewPetPage extends StatelessWidget {
   const NewPetPage({super.key});
@@ -33,7 +34,7 @@ class NewPetPage extends StatelessWidget {
             title: const Text(BaseStrings.newPetAppBarTitle),
             leading: GestureDetector(
               onTap: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop(false);
               },
               child: const Icon(Icons.arrow_back),
             ),
@@ -45,7 +46,7 @@ class NewPetPage extends StatelessWidget {
   }
 
   void _routeBackToDashboard(BuildContext context) {
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(true);
   }
 }
 
@@ -71,7 +72,7 @@ class NewPetView extends StatelessWidget {
                     BlocBuilder<NewPetBloc, NewPetState>(
                       builder: (context, state) {
                         return ElevatedButton(
-                          onPressed: state.formState
+                          onPressed: state.formState.isValid
                               ? () => _onTapCreatePet(context)
                               : null,
                           child: Text(BaseStrings.newPetButtonAddPet),
@@ -280,7 +281,6 @@ class PetIsNeuteredDropdown extends StatelessWidget {
 
     return BaseDropdown(
       typeListItem,
-      value: BaseStrings.newPetIsNeuteredNo,
       hintText: BaseStrings.newPetFieldIsNeutered,
       onChanged: (value) => _onChangeDropdown(context, value),
     );

@@ -1,8 +1,10 @@
 import 'package:event_tracker/features/new_pet/new_pet.dart';
+import 'package:event_tracker/service/session_manager.dart';
 import 'package:event_tracker/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:event_tracker/features/new_pet/models/models.dart';
+import 'package:formz/formz.dart';
 
 part 'new_pet_event.dart';
 part 'new_pet_state.dart';
@@ -11,19 +13,7 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
   NewPetBloc({
     required this.repository,
   }) : super(
-          NewPetState(
-            BaseStrings.empty,
-            BaseStrings.empty,
-            BaseStrings.empty,
-            BaseStrings.empty,
-            BaseStrings.empty,
-            BaseStrings.empty,
-            false,
-            BaseStrings.empty,
-            NewPetReturnModel(),
-            NewPetViewState.idle,
-            false,
-          ),
+          const NewPetState(),
         ) {
     on<NewPetNameChanged>(_onNameChanged);
     on<NewPetTypeChanged>(_onTypeChanged);
@@ -43,9 +33,10 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
     NewPetNameChanged event,
     Emitter<NewPetState> emit,
   ) {
+    var model = NamePetModel.dirty(event.name);
     var newState = state.copyWith(
-      name: event.name,
-      formState: _validate(name: event.name),
+      name: model,
+      formState: _validate(name: model),
     );
     emit(newState);
   }
@@ -54,9 +45,10 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
     NewPetTypeChanged event,
     Emitter<NewPetState> emit,
   ) {
+    var model = TypeModel.dirty(event.type);
     var newState = state.copyWith(
-      type: event.type,
-      formState: _validate(type: event.type),
+      type: model,
+      formState: _validate(type: model),
     );
     emit(newState);
   }
@@ -65,9 +57,10 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
     NewPetSizeChanged event,
     Emitter<NewPetState> emit,
   ) {
+    var model = SizeModel.dirty(event.size);
     var newState = state.copyWith(
-      size: event.size,
-      formState: _validate(size: event.size),
+      size: model,
+      formState: _validate(size: model),
     );
     emit(newState);
   }
@@ -76,9 +69,10 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
     NewPetLocationChanged event,
     Emitter<NewPetState> emit,
   ) {
+    var model = LocationModel.dirty(event.location);
     var newState = state.copyWith(
-      location: event.location,
-      formState: _validate(location: event.location),
+      location: model,
+      formState: _validate(location: model),
     );
     emit(newState);
   }
@@ -87,9 +81,10 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
     NewPetRaceChanged event,
     Emitter<NewPetState> emit,
   ) {
+    var model = RaceModel.dirty(event.race);
     var newState = state.copyWith(
-      race: event.race,
-      formState: _validate(race: event.race),
+      race: model,
+      formState: _validate(race: model),
     );
     emit(newState);
   }
@@ -98,9 +93,10 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
     NewPetSexChanged event,
     Emitter<NewPetState> emit,
   ) {
+    var model = SexModel.dirty(event.sex);
     var newState = state.copyWith(
-      sex: event.sex,
-      formState: _validate(sex: event.sex),
+      sex: model,
+      formState: _validate(sex: model),
     );
     emit(newState);
   }
@@ -109,9 +105,10 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
     NewPetIsNeuteredChanged event,
     Emitter<NewPetState> emit,
   ) {
+    var model = IsNeuteredModel.dirty(event.isNeutered);
     var newState = state.copyWith(
-      isNeutered: event.isNeutered,
-      formState: _validate(),
+      isNeutered: model,
+      formState: _validate(isNeutered: model),
     );
     emit(newState);
   }
@@ -120,9 +117,10 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
     NewPetDescriptionChanged event,
     Emitter<NewPetState> emit,
   ) {
+    var model = DescriptionModel.dirty(event.description);
     var newState = state.copyWith(
-      description: event.description,
-      formState: _validate(description: event.description),
+      description: model,
+      formState: _validate(description: model),
     );
     emit(newState);
   }
@@ -138,14 +136,15 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
   ) async {
     var response = await repository.register(
       NewPetRequestModel(
-        state.name,
-        state.type,
-        state.size,
-        state.location,
-        state.race,
-        state.sex,
-        state.isNeutered,
-        state.description,
+        state.name.value,
+        state.type.value,
+        state.size.value,
+        state.location.value,
+        state.race.value,
+        state.sex.value,
+        state.isNeutered.value!,
+        state.description.value,
+        SessionManager.getToken(),
       ),
     );
     if (response) {
@@ -153,21 +152,25 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
     }
   }
 
-  bool _validate({
-    String? name,
-    String? type,
-    String? size,
-    String? location,
-    String? race,
-    String? sex,
-    String? description,
+  FormzStatus _validate({
+    NamePetModel? name,
+    TypeModel? type,
+    SizeModel? size,
+    LocationModel? location,
+    RaceModel? race,
+    SexModel? sex,
+    IsNeuteredModel? isNeutered,
+    DescriptionModel? description,
   }) {
-    var isAnyEmpty = (name ?? state.name).isEmpty ||
-        (type ?? state.type).isEmpty ||
-        (size ?? state.size).isEmpty ||
-        (location ?? state.location).isEmpty ||
-        (race ?? state.race).isEmpty ||
-        (sex ?? state.sex).isEmpty;
-    return !isAnyEmpty;
+    return Formz.validate([
+      name ?? state.name,
+      type ?? state.type,
+      size ?? state.size,
+      location ?? state.location,
+      race ?? state.race,
+      sex ?? state.sex,
+      isNeutered ?? state.isNeutered,
+      description ?? state.description,
+    ]);
   }
 }

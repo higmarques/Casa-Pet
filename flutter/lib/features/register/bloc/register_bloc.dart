@@ -1,5 +1,6 @@
 import 'package:crypt/crypt.dart';
 import 'package:equatable/equatable.dart';
+import 'package:event_tracker/service/session_manager.dart';
 import 'package:event_tracker/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:event_tracker/features/register/register.dart';
@@ -86,13 +87,14 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       rounds: 5000,
     );
 
-    var didRegister = await repository.register(RegisterModel(
+    var registerToken = await repository.register(RegisterRequestModel(
       username: state.name.value,
       password: encryptedPassword.hash,
       email: state.email.value,
     ));
 
-    if (didRegister) {
+    if (registerToken.isNotEmpty) {
+      SessionManager.setToken(registerToken);
       var successState = state.copyWith(
         requestStatus: RegisterViewState.success,
       );

@@ -1,10 +1,15 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:event_tracker/features/new_pet/new_pet.dart';
 import 'package:event_tracker/service/session_manager.dart';
 import 'package:event_tracker/utils/utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:event_tracker/features/new_pet/models/models.dart';
 import 'package:formz/formz.dart';
+import 'package:image_picker/image_picker.dart';
 
 part 'new_pet_event.dart';
 part 'new_pet_state.dart';
@@ -23,6 +28,7 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
     on<NewPetSexChanged>(_onSexChanged);
     on<NewPetIsNeuteredChanged>(_onIsNeuteredChanged);
     on<NewPetDescriptionChanged>(_onDescriptionChanged);
+    on<NewPetImageRecieved>(_onImageRecieved);
     on<NewPetViewChanged>(_onViewChanged);
     on<NewPetCreatePet>(_onCreatePet);
   }
@@ -125,6 +131,18 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
     emit(newState);
   }
 
+  void _onImageRecieved(
+    NewPetImageRecieved event,
+    Emitter<NewPetState> emit,
+  ) async {
+    // String base64Image = "data:image/png;base64," + base64Encode(file);
+    var newState = state.copyWith(
+      image: event.file,
+      imageType: event.type,
+    );
+    emit(newState);
+  }
+
   void _onViewChanged(
     NewPetViewChanged event,
     Emitter<NewPetState> emit,
@@ -145,6 +163,8 @@ class NewPetBloc extends Bloc<NewPetEvent, NewPetState> {
         state.isNeutered.value!,
         state.description.value,
         SessionManager.getToken(),
+        state.image,
+        state.imageType,
       ),
     );
     if (response) {

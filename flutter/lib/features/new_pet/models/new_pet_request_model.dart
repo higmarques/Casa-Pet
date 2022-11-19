@@ -11,6 +11,8 @@ class NewPetRequestModel implements Codable {
     this.isNeutered,
     this.description,
     this.token,
+    this.photoData,
+    this.format,
   );
 
   @override
@@ -23,7 +25,9 @@ class NewPetRequestModel implements Codable {
         sex = json["sex"],
         isNeutered = json["isNeutered"] == BaseStrings.newPetIsNeuteredYes,
         description = json["description"],
-        token = json["token"];
+        token = json["token"],
+        photoData = json["photoData"],
+        format = json["Formato"];
 
   final String name;
   final String type;
@@ -34,6 +38,8 @@ class NewPetRequestModel implements Codable {
   final bool isNeutered;
   final String description;
   final String token;
+  final String photoData;
+  final String format;
 
   @override
   Map<String, dynamic> toJson() {
@@ -52,6 +58,8 @@ class NewPetRequestModel implements Codable {
       "Imagens": "[NULO]",
       "Tipo": type,
       "Token": token,
+      "Formato": format,
+      "Dados": photoData
     };
   }
 }

@@ -10,6 +10,8 @@ class NewPetState extends Equatable {
     this.sex = const SexModel.pure(),
     this.isNeutered = const IsNeuteredModel.pure(),
     this.description = const DescriptionModel.pure(),
+    this.image = "",
+    this.imageType = "",
     this.petList = const NewPetReturnModel(),
     this.viewState = NewPetViewState.idle,
     this.formState = FormzStatus.pure,
@@ -23,6 +25,8 @@ class NewPetState extends Equatable {
   final SexModel sex;
   final IsNeuteredModel isNeutered;
   final DescriptionModel description;
+  final String image;
+  final String imageType;
   final NewPetReturnModel
       petList; // Vai ser usado depois para exibir a lista de pets
   final NewPetViewState viewState;
@@ -37,6 +41,8 @@ class NewPetState extends Equatable {
     SexModel? sex,
     IsNeuteredModel? isNeutered,
     DescriptionModel? description,
+    String? image,
+    String? imageType,
     NewPetReturnModel? petList,
     NewPetViewState? viewState,
     FormzStatus? formState,
@@ -50,6 +56,8 @@ class NewPetState extends Equatable {
       sex: sex ?? this.sex,
       isNeutered: isNeutered ?? this.isNeutered,
       description: description ?? this.description,
+      image: image ?? this.image,
+      imageType: imageType ?? this.imageType,
       petList: petList ?? this.petList,
       viewState: viewState ?? this.viewState,
       formState: formState ?? this.formState,
@@ -67,8 +75,16 @@ class NewPetState extends Equatable {
         sex,
         isNeutered,
         description,
+        image,
         petList,
         viewState,
         formState,
       ];
+
+  Uint8List? getImage() {
+    if (image.isEmpty) {
+      return null;
+    }
+    return base64Decode(image);
+  }
 }

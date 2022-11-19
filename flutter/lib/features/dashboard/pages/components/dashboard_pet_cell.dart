@@ -1,9 +1,32 @@
+// ignore_for_file: must_be_immutable
+
 part of '../dashboard_page.dart';
 
 class DashboardPetCell extends StatelessWidget {
-  const DashboardPetCell(this.pet, {super.key});
+  DashboardPetCell(this.pet, {super.key}) {
+    isLocalImage = false;
+  }
 
-  final DashboardPet pet;
+  DashboardPetCell.fromImage(Uint8List image, {super.key}) {
+    pet = DashboardPet(
+        id: 0,
+        name: "Exemplo",
+        type: "Tipo",
+        size: "Tamanho",
+        location: "Endereço",
+        race: "Raça",
+        sex: "Sexo",
+        isNeutered: true,
+        description: "Descrição",
+        image: "imageURL",
+        donatorEmail: "email@exemplo.com");
+    isLocalImage = true;
+    localImage = image;
+  }
+
+  late DashboardPet pet;
+  late bool isLocalImage;
+  late Uint8List localImage;
 
   @override
   Widget build(BuildContext context) {
@@ -19,74 +42,87 @@ class DashboardPetCell extends StatelessWidget {
         ),
         child: SizedBox(
           height: 225,
-          child: Stack(children: [
-            SizedBox(
-              height: 255,
-              child: FadeInImage.assetNetwork(
-                  placeholder: BaseImages.gifLoading,
-                  image: pet.image,
-                  imageScale: 0.5,
-                  fit: BoxFit.fitWidth),
-            ),
-            Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  stops: [0.1, 0.3, 0.4],
-                  colors: [
-                    BaseColors.white,
-                    BaseColors.semiTransparentWhite,
-                    BaseColors.transparentWhite
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              SizedBox(
+                height: 255,
+                child: isLocalImage
+                    ? Image.memory(
+                        localImage,
+                        scale: 2.0,
+                        fit: BoxFit.fitWidth,
+                      )
+                    : FadeInImage.assetNetwork(
+                        imageErrorBuilder: (context, error, stackTrace) =>
+                            Image.asset(BaseImages.loginCenterImage),
+                        placeholder: BaseImages.gifLoading,
+                        image: pet.image,
+                        imageScale: 2.0,
+                        fit: BoxFit.fitWidth,
+                      ),
+              ),
+              Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    stops: [0.1, 0.3, 0.4],
+                    colors: [
+                      BaseColors.white,
+                      BaseColors.semiTransparentWhite,
+                      BaseColors.transparentWhite
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      child: Container(),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            "${BaseStrings.dashboardCellName}${pet.name}",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        PetParameter(
+                          title: BaseStrings.dashboardCellSex,
+                          parameter: pet.sex,
+                        ),
+                        PetParameter(
+                          title: BaseStrings.dashboardCellType,
+                          parameter: pet.type,
+                        ),
+                        PetParameter(
+                          title: BaseStrings.dashboardCellSize,
+                          parameter: pet.size,
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                    child: Container(),
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          "${BaseStrings.dashboardCellName}${pet.name}",
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      PetParameter(
-                        title: BaseStrings.dashboardCellSex,
-                        parameter: pet.sex,
-                      ),
-                      PetParameter(
-                        title: BaseStrings.dashboardCellType,
-                        parameter: pet.type,
-                      ),
-                      PetParameter(
-                        title: BaseStrings.dashboardCellSize,
-                        parameter: pet.size,
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ]),
+            ],
+          ),
         ),
       ),
     );

@@ -79,6 +79,16 @@ class NewPetDescriptionChanged extends NewPetEvent {
   List<Object> get props => [description];
 }
 
+class NewPetImageRecieved extends NewPetEvent {
+  const NewPetImageRecieved(this.file, this.type);
+
+  final String file;
+  final String type;
+
+  @override
+  List<Object> get props => [file, type];
+}
+
 class NewPetViewChanged extends NewPetEvent {
   const NewPetViewChanged(this.viewState);
 

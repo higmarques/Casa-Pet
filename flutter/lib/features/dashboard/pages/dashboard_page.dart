@@ -1,6 +1,7 @@
 import 'package:event_tracker/features/dashboard/dashboard.dart';
 import 'package:event_tracker/service/session_manager.dart';
 import 'package:event_tracker/utils/utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:math' as math;

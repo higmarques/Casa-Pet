@@ -40,17 +40,17 @@ class DashboardPet implements Codable {
 
   @override
   DashboardPet.fromJson(Map<String, dynamic> json)
-      : id = json["idpets"],
-        name = json["NomePet"],
-        size = json["Porte"],
-        type = json["Tipo"],
-        location = json["Localizacao"],
-        race = json["Raca"],
-        sex = json["Sexo"],
-        description = json["Descricao"],
+      : id = json["idpets"] ?? 0,
+        name = json["NomePet"] ?? "-",
+        size = json["Porte"] ?? "-",
+        type = json["Tipo"] ?? "-",
+        location = json["Localizacao"] ?? "-",
+        race = json["Raca"] ?? "-",
+        sex = json["Sexo"] ?? "-",
+        description = json["Descricao"] ?? "-",
         isNeutered = (json["Castrado"] == BaseStrings.newPetIsNeuteredYes),
-        image = json["Imagens"],
-        donatorEmail = json["fk_emailUsers"];
+        image = json["Imagens"] ?? "-",
+        donatorEmail = json["fk_emailUsers"] ?? "-";
 
   final int id;
   final String name;

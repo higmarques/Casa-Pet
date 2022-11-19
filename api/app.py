@@ -85,11 +85,13 @@ class Pets(db.Model):
     Imagens = db.Column(db.String(200))
     Tipo = db.Column(db.String(100))
     fk_idusers = db.Column(db.Integer, db.ForeignKey('users.idusers'))
+    fk_nomeUsers = db.Column(db.Integer, db.ForeignKey('users.nomeCompleto'))
+    fk_emailUsers = db.Column(db.Integer, db.ForeignKey('users.email'))
 
     def to_json(self):
         return {"idpets": self.idpets, "NomePet": self.NomePet, "Porte": self.Porte, "Tipo": self.Tipo,
                 "Localizacao": self.Localizacao, "Raca": self.Raca, "Sexo": self.Sexo,
-                "Descricao": self.Descricao, "Castrado": self.Castrado, "Imagens": self.Imagens}
+                "Descricao": self.Descricao, "Castrado": self.Castrado, "Imagens": self.Imagens, "fk_idusers": self.fk_idusers, "fk_nomeUsers": self.fk_nomeUsers, "fk_emailUsers": self.fk_emailUsers}
 
 
 class Token(db.Model):
@@ -100,7 +102,7 @@ class Token(db.Model):
 
 # Selecionar Todos os Pets
 @app.route("/pets", methods=["GET"])
-def seleciona_usuarios():
+def seleciona_pets():
     usuarios_objetos = Pets.query.all()
     pets_json = [pets.to_json() for pets in usuarios_objetos]
 
@@ -146,6 +148,8 @@ def cria_pet():
     usuario = Users.query.filter_by(
         token_id=token).first()
     id_usuario_token = usuario.idusers
+    nome_usuario = usuario.nomeCompleto
+    email_usuario = usuario.email
 
     file_name = body["Dados"]
     object_name = "TESTE" + "." + body["Formato"]
@@ -193,7 +197,7 @@ def cria_pet():
         pets = Pets(
             NomePet=body["NomePet"], Porte=body["Porte"], Localizacao=body["Localizacao"],
             Raca=body["Raca"], Sexo=body["Sexo"], Descricao=body["Descricao"],
-            Castrado=body["Castrado"], Imagens=image_url, Tipo=body["Tipo"], fk_idusers=id_usuario_token)
+            Castrado=body["Castrado"], Imagens=image_url, Tipo=body["Tipo"], fk_idusers=id_usuario_token, fk_nomeUsers=nome_usuario, fk_emailUsers=email_usuario)
         db.session.add(pets)
         db.session.commit()
         return gera_response(201, "pets", pets.to_json(), "Criado com sucesso")
@@ -277,47 +281,4 @@ def gera_response_vazio(status):
     return Response(status=status, mimetype="application/json")
 
 
-@ app.route("/foto", methods=["GET"])
-def lambda_handler():
-    body = request.get_json()
-    image_base64 = body["foto"]
-    file_name_with_extension = body["nome_do_arquivo"]
-    obj = s3.Object(bucket_name, file_name_with_extension)
-    obj.put(Body=base64.b64decode(image_base64))
-
-
-def create_presigned_url(bucket_name, object_name):
-    s3_client = boto3.client('s3', aws_access_key_id='AKIAUUUNYLUHHNX37WF2',
-                             aws_secret_access_key="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")
-    bucket_name = 'casa-pet'
-    object_name = 'testehl.jpeg'
-
-    response = s3_client.generate_presigned_url('get_object',
-                                                Params={'Bucket': 'casa-pet',
-                                                        'Key': 'testehl.jpeg'})
-
-    # The response contains the presigned URL
-    return response
-
-    # # get bucket location
-    # location = boto3.client('s3', aws_access_key_id='AKIAUUUNYLUHHNX37WF2',
-    #                       aws_secret_access_key="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").get_bucket_location(
-    #  Bucket=bucket_name)['LocationConstraint']
-    # response = s3_client.get_bucket_location(
-    # Bucket = bucket_name)
-    # response = s3.Object(bucket_name, "testehl.jpeg")
-    # print(response)
-    # # print(response)
-    # # # get object url
-    # object_url = "https://%s.s3.us-east-1.amazonaws.com/%s" % (
-    #     bucket_name, file_name_with_extension)
-    # print(object_url)
-    # # Get Object
-
-    # response = s3_client.download_file(bucket_name, "klee.png", "klee.png")
-    # response = s3_client.get_object(Bucket=bucket_name, Key="klee.png")
-    # print(response)
-    # return gera_response_vazio(200)
-
-
-app.run(host="192.168.15.14")
+app.run(host="192.168.56.1")

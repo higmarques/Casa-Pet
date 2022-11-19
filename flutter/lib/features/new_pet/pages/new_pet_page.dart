@@ -1,10 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
+import 'package:event_tracker/features/dashboard/dashboard.dart';
 import 'package:event_tracker/features/new_pet/new_pet.dart';
 import 'package:event_tracker/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:image_picker/image_picker.dart';
 
 class NewPetPage extends StatelessWidget {
   const NewPetPage({super.key});
@@ -23,6 +27,7 @@ class NewPetPage extends StatelessWidget {
     return BlocListener<NewPetBloc, NewPetState>(
       listener: (context, state) {
         if (state.viewState == NewPetViewState.success) {
+          context.read<NewPetBloc>().close;
           _routeBackToDashboard(context);
         }
       },
@@ -140,7 +145,16 @@ class NewPetForm extends StatelessWidget {
           onChanged: (value) => _onDescriptionChanged(context, value),
         ),
         SizedBox(height: 16),
-        // UploadButton(_onTapUpload), Adicionar depois
+        UploadButton(() => _onTapUpload(context)),
+        SizedBox(height: 16),
+        BlocBuilder<NewPetBloc, NewPetState>(
+          builder: (context, state) {
+            var image = state.getImage();
+            return image != null
+                ? DashboardPetCell.fromImage(image)
+                : Container();
+          },
+        ),
         SizedBox(height: 16),
         // BaseTooltip(
         //   BaseStrings.newPetFormNotValidText,
@@ -167,7 +181,20 @@ class NewPetForm extends StatelessWidget {
     context.read<NewPetBloc>().add(NewPetDescriptionChanged(value));
   }
 
-  void _onTapUpload(BuildContext context) {}
+  void _onTapUpload(BuildContext context) async {
+    var bloc = context.read<NewPetBloc>();
+
+    XFile? pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      var base64 = base64Encode(await pickedFile.readAsBytes());
+      var type = pickedFile.path.split(".").last;
+      bloc.add(NewPetImageRecieved(base64, type));
+    }
+  }
 }
 
 class PetTypeDropdown extends StatelessWidget {
